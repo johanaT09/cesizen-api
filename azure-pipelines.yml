@@ -27,8 +27,8 @@ steps:
 
 # Étape de test pour confirmer que tout est là
 - script: |
-    echo Dossier racine : %CD%
-    dir
-    echo Verification du dossier s :
-    dir s
+    echo --- CONTENU DU WORKSPACE ---
+    dir "$(Pipeline.Workspace)"
+    echo --- CONTENU DES SOURCES ---
+    dir "$(Build.SourcesDirectory)"
   displayName: 'Vérifier les dossiers extraits'
