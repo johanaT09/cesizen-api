@@ -14,7 +14,7 @@ resources:
         - main                  # Le pipeline se lancera aussi si le Web bouge
 
 pool:
-  vmImage: 'ubuntu-latest'
+  name: Default
 
 steps:
 # On extrait l'API (self) dans un dossier dédié
