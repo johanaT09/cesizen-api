@@ -27,6 +27,8 @@ steps:
 
 # Étape de test pour confirmer que tout est là
 - script: |
-    echo "Structure actuelle :"
-    ls -d $(Build.SourcesDirectory)/*/
+    echo Dossier racine : %CD%
+    dir
+    echo Verification du dossier s :
+    dir s
   displayName: 'Vérifier les dossiers extraits'
