@@ -1,0 +1,34 @@
+# Déclencheur : le pipeline se lance si on push sur le main de l'API
+trigger:
+- main
+
+resources:
+  repositories:
+  - repository: RepoWeb         # Alias pour le front-end
+    type: github
+    name: johanaT09/cesizen-web # Ton dépôt GitHub Web
+    endpoint: GitHub-Connexion-Centrale         # /!\ À vérifier dans tes Service Connections
+    trigger:
+      branches:
+        include:
+        - main                  # Le pipeline se lancera aussi si le Web bouge
+
+pool:
+  name: Default
+
+steps:
+# On extrait l'API (self) dans un dossier dédié
+- checkout: self
+  path: s/api
+
+# On extrait le Web dans un dossier dédié
+- checkout: RepoWeb
+  path: s/web
+
+# Étape de test pour confirmer que tout est là
+- script: |
+    echo --- CONTENU DU WORKSPACE ---
+    dir "$(Pipeline.Workspace)"
+    echo --- CONTENU DES SOURCES ---
+    dir "$(Build.SourcesDirectory)"
+  displayName: 'Vérifier les dossiers extraits'
