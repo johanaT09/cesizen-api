@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Services;
+namespace App\Services\Compte;
 
-use App\Repositories\GenreUtilisateurRepository;
+use App\Repositories\Compte\GenreUtilisateurRepository;
 
 class GenreUtilisateurService
 {
