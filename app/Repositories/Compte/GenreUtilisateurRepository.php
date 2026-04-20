@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Repositories;
+namespace App\Repositories\Compte;
 
 use App\Models\GenreUtilisateur;
 

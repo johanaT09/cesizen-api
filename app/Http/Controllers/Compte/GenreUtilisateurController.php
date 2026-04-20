@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Compte;
 
-use App\Services\GenreUtilisateurService;
-use Illuminate\Http\Request;
+use App\Services\Compte\GenreUtilisateurService;
+use App\Http\Controllers\Controller;
 
 class GenreUtilisateurController extends Controller
 {
