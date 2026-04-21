@@ -18,7 +18,6 @@ class UtilisateurController extends Controller
     public function signIn(Request $request)
     {
         try {
-            // Vérifie si le body est bien du JSON
             if ($request->header('Content-Type') !== 'application/json' && !$request->isJson()) {
                 return response()->json(['message' => 'Requête mal formée (JSON attendu)'], 400);
             }
@@ -41,6 +40,36 @@ class UtilisateurController extends Controller
             ], 422);
         } catch (\Symfony\Component\HttpKernel\Exception\BadRequestHttpException $e) {
             return response()->json(['message' => 'Requête mal formée'], 400);
+        } catch (\Exception $e) {
+            return response()->json(['message' => 'Erreur serveur'], 500);
+        }
+    }
+
+    
+    public function update(Request $request)
+    {
+        try {
+            if ($request->header('Content-Type') !== 'application/json' && !$request->isJson()) {
+                return response()->json(['message' => 'Requête mal formée (JSON attendu)'], 400);
+            }
+
+            $validated = $request->validate([
+                'prenom' => 'sometimes|required|string',
+                'date_naissance' => 'sometimes|required|date',
+                'id_genre' => 'sometimes|required|exists:genre_utilisateur,id_genre',
+            ]);
+
+            $user = $request->user();
+            $utilisateur = $this->utilisateurService->updateUtilisateur($user->id_utilisateur, $validated);
+            if (!$utilisateur) {
+                return response()->json(['message' => "Utilisateur non trouvé"], 404);
+            }
+            return response()->json(['message' => 'Utilisateur mis à jour', 'utilisateur' => $utilisateur], 200);
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            return response()->json([
+                'message' => 'Champs requis',
+                'errors' => $e->errors()
+            ], 422);
         } catch (\Exception $e) {
             return response()->json(['message' => 'Erreur serveur'], 500);
         }
