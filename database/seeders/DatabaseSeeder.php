@@ -53,7 +53,7 @@ class DatabaseSeeder extends Seeder
             'prenom' => 'Johana',
             'date_naissance' => '2004-11-16',
             'email' => 'johana.terrier@viacesi.fr',
-            'mot_de_passe' => Hash::make('mdp'),
+            'mot_de_passe' => Hash::make('mot_de_passe'),
             'consentement_rgpd' => now(),
             'est_actif' => true,
             'date_anonymisation' => null,

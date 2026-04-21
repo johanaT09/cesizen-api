@@ -2,10 +2,12 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
+use Laravel\Sanctum\HasApiTokens;
 
-class Utilisateur extends Model
+class Utilisateur extends \Illuminate\Foundation\Auth\User
 {
+    use HasApiTokens;
+
     protected $table = 'utilisateur';
     protected $primaryKey = 'id_utilisateur';
     public $incrementing = true;
