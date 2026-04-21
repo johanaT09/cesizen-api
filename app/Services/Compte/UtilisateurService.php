@@ -17,11 +17,11 @@ class UtilisateurService
     public function signIn($data)
     {
         $data['est_actif'] = true;
-        $data['date_anonymisation'] = now();
+        $data['date_anonymisation'] = null;
+        $data['consentement_rgpd'] = now();
         $role = Role::where('libelle', 'Utilisateur')->first();
         $data['id_role'] = $role ? $role->id_role : null;
         $data['mot_de_passe'] = bcrypt($data['mot_de_passe']);
-        unset($data['mot_de_passe']);
         return $this->utilisateurRepository->createUtilisateur($data);
     }
 }
