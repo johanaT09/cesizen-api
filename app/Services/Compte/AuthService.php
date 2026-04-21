@@ -24,7 +24,6 @@ class AuthService
             throw new \Exception('Identifiants invalides');
         }
 
-        // Générer un token Sanctum valable 7h
         $tokenResult = $user->createToken('auth_token');
         $token = $tokenResult->plainTextToken;
         $tokenModel = $tokenResult->accessToken;

@@ -10,4 +10,15 @@ class UtilisateurRepository
     {
         return Utilisateur::create($data);
     }
+    
+    public function updateUtilisateur($id, $data)
+    {
+        $utilisateur = Utilisateur::find($id);
+        if (!$utilisateur) {
+            return null;
+        }
+        $utilisateur->fill($data);
+        $utilisateur->save();
+        return $utilisateur;
+    }
 }

@@ -14,7 +14,6 @@ class GenreUtilisateurController extends Controller
         $this->genreUtilisateurService = $genreUtilisateurService;
     }
 
-    // GET /genres
     public function GetGenres()
     {
         $genres = $this->genreUtilisateurService->getAllGenres();
