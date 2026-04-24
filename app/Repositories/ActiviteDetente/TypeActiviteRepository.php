@@ -10,4 +10,9 @@ class TypeActiviteRepository
     {
         return TypeActivite::all();
     }
+
+    public function getTypeById($id)
+    {
+        return TypeActivite::find($id);
+    }
 }

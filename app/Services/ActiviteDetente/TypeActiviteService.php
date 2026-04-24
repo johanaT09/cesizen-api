@@ -17,4 +17,9 @@ class TypeActiviteService
     {
         return $this->typeActiviteRepository->getAllTypes();
     }
+
+    public function getTypeById($id)
+    {
+        return $this->typeActiviteRepository->getTypeById($id);
+    }
 }

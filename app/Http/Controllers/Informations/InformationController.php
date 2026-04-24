@@ -15,7 +15,7 @@ class InformationController extends Controller
         $this->informationService = $informationService;
     }
 
-    public function index(): JsonResponse
+    public function getInformations(): JsonResponse
     {
         $informations = $this->informationService->getAllInformations();
 
@@ -25,7 +25,7 @@ class InformationController extends Controller
         ]);
     }
 
-    public function show($id): JsonResponse
+    public function getInformationById($id): JsonResponse
     {
         $information = $this->informationService->getInformationById($id);
 
