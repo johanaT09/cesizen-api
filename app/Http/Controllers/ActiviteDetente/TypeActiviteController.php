@@ -15,8 +15,19 @@ class TypeActiviteController extends Controller
         $this->typeActiviteService = $typeActiviteService;
     }
 
-    public function index(): JsonResponse
+    public function getTypesActivites(): JsonResponse
     {
         return response()->json($this->typeActiviteService->getAllTypes());
+    }
+
+    public function getTypeActiviteById($id): JsonResponse
+    {
+        $type = $this->typeActiviteService->getTypeById($id);
+        
+        if (!$type) {
+            return response()->json(['message' => 'Type non trouvé'], 404);
+        }
+
+        return response()->json($type);
     }
 }

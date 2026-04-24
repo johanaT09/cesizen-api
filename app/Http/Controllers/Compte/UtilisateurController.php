@@ -46,7 +46,7 @@ class UtilisateurController extends Controller
     }
 
     
-    public function update(Request $request)
+    public function updateUtilisateur(Request $request)
     {
         try {
             if ($request->header('Content-Type') !== 'application/json' && !$request->isJson()) {

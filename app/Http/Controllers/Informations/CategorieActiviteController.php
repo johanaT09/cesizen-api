@@ -25,7 +25,7 @@ class CategorieActiviteController extends Controller
         return response()->json($categories);
     }
 
-    public function AddCategorieActivite(Request $request): JsonResponse
+    public function addCategorieActivite(Request $request): JsonResponse
     {
         $validatedData = $request->validate([
             'libelle_categorie' => 'required|string|max:255|unique:categorie_activite,libelle_categorie',

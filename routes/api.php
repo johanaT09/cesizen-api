@@ -21,25 +21,28 @@ Route::middleware('auth:sanctum')->group(function () {
     // Déconnexion utilisateur
     Route::post('/logout', [AuthController::class, 'logout']);
     // Modification des informations utilisateur connecté (prenom, date_naissance, id_genre)
-    Route::put('/utilisateur', [UtilisateurController::class, 'update']);
+    Route::put('/utilisateur', [UtilisateurController::class, 'updateUtilisateur']);
 });
 
 // Liste les catégories d'informations
 Route::get('/categories', [CategorieActiviteController::class, 'getAllCategories']);
 
 // Création d'une catégorie d'information
-Route::post('/addcategorie', [CategorieActiviteController::class, 'AddCategorieActivite']);
+Route::post('/addcategorie', [CategorieActiviteController::class, 'addCategorieActivite']);
 
 // Modification d'une catégorie d'information
 Route::put('/categories/{id}', [CategorieActiviteController::class, 'updateCategorieActivite']);
 
 
 // Liste toutes les informations
-Route::get('/informations', [InformationController::class, 'index']);
+Route::get('/informations', [InformationController::class, 'getInformations']);
 
 // Récupérer une information précise par son ID
-Route::get('/informations/{id}', [InformationController::class, 'show']);
+Route::get('/informations/{id}', [InformationController::class, 'getInformationById']);
 
 
 // Récupérer tous les types (ex: Audio, Vidéo, Article)
-Route::get('/types-activites', [TypeActiviteController::class, 'index']);
+Route::get('/types-activites', [TypeActiviteController::class, 'getTypesActivites']);
+
+// Récupérer un type spécifique
+Route::get('/types-activites/{id}', [TypeActiviteController::class, 'getTypeActiviteById']);
