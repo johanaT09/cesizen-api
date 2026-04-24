@@ -25,3 +25,6 @@ Route::middleware('auth:sanctum')->group(function () {
 
 // Liste les catégories d'informations
 Route::get('/categories', [CategorieActiviteController::class, 'getAllCategories']);
+
+// Création d'une catégorie d'information
+Route::post('/addcategorie', [CategorieActiviteController::class, 'AddCategorieActivite']);
