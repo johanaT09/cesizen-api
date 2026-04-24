@@ -22,4 +22,11 @@ class ActiviteRepository
             ->where('id_type', $typeId)
             ->get();
     }
+
+    public function getActivitesByCategorie($categorieId)
+    {
+        return ActiviteDetente::with(['categorie', 'type'])
+            ->where('id_categorie', $categorieId)
+            ->get();
+    }
 }
