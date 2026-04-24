@@ -10,4 +10,9 @@ class CategorieActiviteRepository
     {
         return CategorieActivite::all(['libelle_categorie']);
     }
+
+    public function AddCategorieActivite(array $data)
+    {
+        return CategorieActivite::create($data);
+    }
 }

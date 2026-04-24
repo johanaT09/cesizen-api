@@ -17,4 +17,9 @@ class CategorieActiviteService
     {
         return $this->categorieActiviteRepository->getAllCategories();
     }
+    
+    public function AddCategorieActivite($data)
+    {
+        return $this->categorieActiviteRepository->AddCategorieActivite($data);
+    }
 }
