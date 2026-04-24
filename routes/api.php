@@ -35,3 +35,6 @@ Route::put('/categories/{id}', [CategorieActiviteController::class, 'updateCateg
 
 // Liste toutes les informations
 Route::get('/informations', [InformationController::class, 'index']);
+
+// Récupérer une information précise par son ID
+Route::get('/informations/{id}', [InformationController::class, 'show']);

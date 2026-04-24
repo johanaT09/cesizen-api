@@ -10,4 +10,9 @@ class InformationRepository
     {
         return Information::with('categorie', 'utilisateur')->get();
     }
+
+    public function getInformationById($id)
+    {
+        return Information::with('categorie', 'utilisateur')->find($id);
+    }
 }
