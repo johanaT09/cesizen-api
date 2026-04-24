@@ -6,6 +6,7 @@ use App\Http\Controllers\Compte\GenreUtilisateurController;
 use App\Http\Controllers\Compte\UtilisateurController;
 use App\Http\Controllers\Compte\AuthController;
 use App\Http\Controllers\Informations\InformationController;
+use App\Http\Controllers\ActiviteDetente\TypeActiviteController;
 
 // Liste les genres utilisateurs
 Route::get('/genres', [GenreUtilisateurController::class, 'GetGenres']);
@@ -38,3 +39,7 @@ Route::get('/informations', [InformationController::class, 'index']);
 
 // Récupérer une information précise par son ID
 Route::get('/informations/{id}', [InformationController::class, 'show']);
+
+
+// Récupérer tous les types (ex: Audio, Vidéo, Article)
+Route::get('/types-activites', [TypeActiviteController::class, 'index']);
