@@ -5,7 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Compte\GenreUtilisateurController;
 use App\Http\Controllers\Compte\UtilisateurController;
 use App\Http\Controllers\Compte\AuthController;
-use App\Http\Controllers\Compte\InformationController;
+use App\Http\Controllers\Informations\InformationController;
 
 // Liste les genres utilisateurs
 Route::get('/genres', [GenreUtilisateurController::class, 'GetGenres']);
@@ -31,3 +31,7 @@ Route::post('/addcategorie', [CategorieActiviteController::class, 'AddCategorieA
 
 // Modification d'une catégorie d'information
 Route::put('/categories/{id}', [CategorieActiviteController::class, 'updateCategorieActivite']);
+
+
+// Liste toutes les informations
+Route::get('/informations', [InformationController::class, 'index']);
