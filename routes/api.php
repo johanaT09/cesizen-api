@@ -5,12 +5,13 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Compte\GenreUtilisateurController;
 use App\Http\Controllers\Compte\UtilisateurController;
 use App\Http\Controllers\Compte\AuthController;
+use App\Http\Controllers\Compte\InformationController;
 
 // Liste les genres utilisateurs
 Route::get('/genres', [GenreUtilisateurController::class, 'GetGenres']);
 
 // Création d'un compte utilisateur
-Route::post('/signin', [UtilisateurController::class, 'signIn']);
+Route::post('/signup', [UtilisateurController::class, 'signUp']);
 
 // Connexion utilisateur
 Route::post('/login', [AuthController::class, 'login']);

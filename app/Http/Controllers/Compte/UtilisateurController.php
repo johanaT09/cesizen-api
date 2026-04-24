@@ -15,7 +15,7 @@ class UtilisateurController extends Controller
         $this->utilisateurService = $utilisateurService;
     }
 
-    public function signIn(Request $request)
+    public function signUp(Request $request)
     {
         try {
             if ($request->header('Content-Type') !== 'application/json' && !$request->isJson()) {
@@ -31,7 +31,7 @@ class UtilisateurController extends Controller
                 'consentement_rgpd' => 'required|boolean',
             ]);
 
-            $utilisateur = $this->utilisateurService->signIn($validated);
+            $utilisateur = $this->utilisateurService->signUp($validated);
             return response()->json(['message' => 'Création compte réussie'], 201);
         } catch (\Illuminate\Validation\ValidationException $e) {
             return response()->json([

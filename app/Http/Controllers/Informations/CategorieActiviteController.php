@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Http\Controllers\Informations; // Ajoute \Informations ici
+namespace App\Http\Controllers\Informations; 
 
-use App\Http\Controllers\Controller; // AJOUTE CETTE LIGNE (car Controller est au parent)
+use App\Http\Controllers\Controller; 
 use App\Services\Informations\CategorieActiviteService;
 use Illuminate\Http\JsonResponse;
 
