@@ -62,3 +62,6 @@ Route::get('/activites/type/{typeId}', [ActiviteController::class, 'getActivites
 
 // Liste les activités filtrées par l'ID de la catégorie
 Route::get('/activites/categorie/{categorieId}', [ActiviteController::class, 'getActivitesByCategorie']);
+
+// Ajouter une activité
+Route::post('/activite', [ActiviteController::class, 'addActivite']);

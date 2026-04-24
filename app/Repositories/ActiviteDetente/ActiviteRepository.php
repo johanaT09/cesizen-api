@@ -29,4 +29,10 @@ class ActiviteRepository
             ->where('id_categorie', $categorieId)
             ->get();
     }
+
+    public function createActivite(array $data)
+    {
+        $data['est_actif'] = true;
+        return ActiviteDetente::create($data);
+    }
 }
