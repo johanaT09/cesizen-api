@@ -18,10 +18,27 @@ class InformationController extends Controller
     public function index(): JsonResponse
     {
         $informations = $this->informationService->getAllInformations();
-        
+
         return response()->json([
             'status' => 'success',
             'data' => $informations
+        ]);
+    }
+
+    public function show($id): JsonResponse
+    {
+        $information = $this->informationService->getInformationById($id);
+
+        if (!$information) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Information non trouvée'
+            ], 404);
+        }
+
+        return response()->json([
+            'status' => 'success',
+            'data' => $information
         ]);
     }
 }

@@ -17,4 +17,9 @@ class InformationService
     {
         return $this->informationRepository->getAllInformations();
     }
-}   
+
+    public function getInformationById($id)
+    {
+        return $this->informationRepository->getInformationById($id);
+    }
+}
