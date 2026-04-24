@@ -22,4 +22,9 @@ class CategorieActiviteService
     {
         return $this->categorieActiviteRepository->AddCategorieActivite($data);
     }
+
+    public function updateCategorieActivite($id, $data)
+    {
+        return $this->categorieActiviteRepository->updateCategorieActivite($id, $data);
+    }
 }
