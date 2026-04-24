@@ -22,4 +22,9 @@ class TypeActiviteService
     {
         return $this->typeActiviteRepository->getTypeById($id);
     }
+
+    public function createType(array $data)
+    {
+        return $this->typeActiviteRepository->createType($data);
+    }
 }

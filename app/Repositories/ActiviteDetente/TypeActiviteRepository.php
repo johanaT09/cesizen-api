@@ -15,4 +15,9 @@ class TypeActiviteRepository
     {
         return TypeActivite::find($id);
     }
+
+    public function createType(array $data)
+    {
+        return TypeActivite::create($data);
+    }
 }
