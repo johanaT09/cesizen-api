@@ -5,6 +5,7 @@ namespace App\Http\Controllers\ActiviteDetente;
 use App\Http\Controllers\Controller;
 use App\Services\ActiviteDetente\ActiviteService;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 
 class ActiviteController extends Controller
 {
@@ -76,5 +77,24 @@ class ActiviteController extends Controller
             'status' => 'success',
             'data' => $activites
         ]);
+    }
+
+    public function addActivite(Request $request): JsonResponse
+    {
+        $validated = $request->validate([
+            'titre_activite' => 'required|string|max:255',
+            'description_activite' => 'nullable|string',
+            'lien_ressource' => 'required|string', // URL ou contenu
+            'id_type' => 'required|exists:type,id_type', // Vérifie l'existence dans la table type
+            'id_categorie' => 'required|exists:categorie_activite,id_categorie', // Vérifie dans la table categorie
+        ]);
+
+        $activite = $this->activiteService->createActivite($validated);
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Activité ajoutée avec succès',
+            'data' => $activite
+        ], 201);
     }
 }

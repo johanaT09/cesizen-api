@@ -32,4 +32,9 @@ class ActiviteService
     {
         return $this->activiteRepository->getActivitesByCategorie($categorieId);
     }
+
+    public function createActivite(array $data)
+    {
+        return $this->activiteRepository->createActivite($data);
+    }
 }
