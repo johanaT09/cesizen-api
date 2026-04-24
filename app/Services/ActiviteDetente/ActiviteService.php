@@ -27,4 +27,9 @@ class ActiviteService
     {
         return $this->activiteRepository->getActivitesByType($typeId);
     }
+
+    public function getActivitesByCategorie($categorieId)
+    {
+        return $this->activiteRepository->getActivitesByCategorie($categorieId);
+    }
 }

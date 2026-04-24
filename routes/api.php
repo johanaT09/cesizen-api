@@ -59,3 +59,6 @@ Route::get('/activites/{id}', [ActiviteController::class, 'getActiviteById']);
 
 // Liste les activités filtrées par l'ID du type
 Route::get('/activites/type/{typeId}', [ActiviteController::class, 'getActivitesByType']);
+
+// Liste les activités filtrées par l'ID de la catégorie
+Route::get('/activites/categorie/{categorieId}', [ActiviteController::class, 'getActivitesByCategorie']);
