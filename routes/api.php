@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Informations\CategorieActiviteController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Compte\GenreUtilisateurController;
 use App\Http\Controllers\Compte\UtilisateurController;
@@ -20,3 +21,6 @@ Route::middleware('auth:sanctum')->group(function () {
     // Modification des informations utilisateur connecté (prenom, date_naissance, id_genre)
     Route::put('/utilisateur', [UtilisateurController::class, 'update']);
 });
+
+// Liste les catégories d'informations
+Route::get('/categories', [CategorieActiviteController::class, 'getAllCategories']);
