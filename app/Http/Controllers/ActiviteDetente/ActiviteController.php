@@ -41,4 +41,22 @@ class ActiviteController extends Controller
             'data' => $activite
         ]);
     }
+
+    public function getActivitesByType($typeId): JsonResponse
+    {
+        $activites = $this->activiteService->getActivitesByType($typeId);
+
+        if ($activites->isEmpty()) {
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Aucune activité trouvée pour ce type',
+                'data' => []
+            ]);
+        }
+
+        return response()->json([
+            'status' => 'success',
+            'data' => $activites
+        ]);
+    }
 }

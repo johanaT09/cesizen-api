@@ -19,7 +19,12 @@ class ActiviteService
     }
 
     public function getActiviteById($id)
-{
-    return $this->activiteRepository->getActiviteById($id);
-}
+    {
+        return $this->activiteRepository->getActiviteById($id);
+    }
+
+    public function getActivitesByType($typeId)
+    {
+        return $this->activiteRepository->getActivitesByType($typeId);
+    }
 }
