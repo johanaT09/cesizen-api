@@ -53,3 +53,6 @@ Route::post('/types-activites', [TypeActiviteController::class, 'createType']);
 
 // Liste toutes les activités de détente
 Route::get('/activites', [ActiviteController::class, 'getAllActivites']);
+
+// Récupérer une activité de détente par son ID
+Route::get('/activites/{id}', [ActiviteController::class, 'getActiviteById']);
