@@ -7,6 +7,7 @@ use App\Http\Controllers\Compte\UtilisateurController;
 use App\Http\Controllers\Compte\AuthController;
 use App\Http\Controllers\Informations\InformationController;
 use App\Http\Controllers\ActiviteDetente\TypeActiviteController;
+use App\Http\Controllers\ActiviteDetente\ActiviteController;
 
 // Liste les genres utilisateurs
 Route::get('/genres', [GenreUtilisateurController::class, 'GetGenres']);
@@ -49,3 +50,6 @@ Route::get('/types-activites/{id}', [TypeActiviteController::class, 'getTypeActi
 
 // Ajout d'un type d'activité
 Route::post('/types-activites', [TypeActiviteController::class, 'createType']);
+
+// Liste toutes les activités de détente
+Route::get('/activites', [ActiviteController::class, 'getAllActivites']);
