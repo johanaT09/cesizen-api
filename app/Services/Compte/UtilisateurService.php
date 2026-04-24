@@ -14,7 +14,7 @@ class UtilisateurService
         $this->utilisateurRepository = $utilisateurRepository;
     }
 
-    public function signIn($data)
+    public function signUp($data)
     {
         $data['est_actif'] = true;
         $data['date_anonymisation'] = null;
