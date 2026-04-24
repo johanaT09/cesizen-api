@@ -46,3 +46,6 @@ Route::get('/types-activites', [TypeActiviteController::class, 'getTypesActivite
 
 // Récupérer un type spécifique
 Route::get('/types-activites/{id}', [TypeActiviteController::class, 'getTypeActiviteById']);
+
+// Ajout d'un type d'activité
+Route::post('/types-activites', [TypeActiviteController::class, 'createType']);
