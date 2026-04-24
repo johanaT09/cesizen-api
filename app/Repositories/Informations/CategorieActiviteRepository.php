@@ -15,4 +15,16 @@ class CategorieActiviteRepository
     {
         return CategorieActivite::create($data);
     }
+
+    public function updateCategorieActivite($id, $data)
+{
+    $categorie = CategorieActivite::find($id);
+    
+    if (!$categorie) {
+        return null;
+    }
+
+    $categorie->update($data); 
+    return $categorie;
+}
 }

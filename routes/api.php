@@ -28,3 +28,6 @@ Route::get('/categories', [CategorieActiviteController::class, 'getAllCategories
 
 // Création d'une catégorie d'information
 Route::post('/addcategorie', [CategorieActiviteController::class, 'AddCategorieActivite']);
+
+// Modification d'une catégorie d'information
+Route::put('/categories/{id}', [CategorieActiviteController::class, 'updateCategorieActivite']);
