@@ -126,4 +126,33 @@ class ActiviteController extends Controller
             'data' => $favoris
         ]);
     }
+
+    public function update(Request $request, $id): JsonResponse
+    {
+        try {
+            $validated = $request->validate([
+                'titre_activite'       => 'sometimes|required|string|max:255',
+                'description_activite' => 'sometimes|nullable|string',
+                'lien_ressource'       => 'sometimes|required|string',
+                'duree_estimee'        => 'sometimes|required|string',
+                'est_actif'            => 'sometimes|required|boolean',
+                'id_type'              => 'sometimes|required|exists:type,id_type',
+                'id_categorie'         => 'sometimes|required|exists:categorie_activite,id_categorie',
+            ]);
+
+            $activite = $this->activiteService->updateActivite($id, $validated);
+
+            if (!$activite) {
+                return response()->json(['message' => 'Activité non trouvée'], 404);
+            }
+
+            return response()->json([
+                'status'  => 'success',
+                'message' => 'Activité mise à jour avec succès',
+                'data'    => $activite
+            ]);
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            return response()->json(['errors' => $e->errors()], 422);
+        }
+    }
 }
