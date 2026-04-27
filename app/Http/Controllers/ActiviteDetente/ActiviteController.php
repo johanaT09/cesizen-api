@@ -155,4 +155,19 @@ class ActiviteController extends Controller
             return response()->json(['errors' => $e->errors()], 422);
         }
     }
+
+    public function disableActivite($id): JsonResponse
+    {
+        $activite = $this->activiteService->desactiverActivite($id);
+
+        if (!$activite) {
+            return response()->json(['message' => 'Activité non trouvée'], 404);
+        }
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'L\'activité a été désactivée',
+            'data' => $activite
+        ]);
+    }
 }
