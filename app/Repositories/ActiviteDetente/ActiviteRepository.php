@@ -3,6 +3,7 @@
 namespace App\Repositories\ActiviteDetente;
 
 use App\Models\ActiviteDetente;
+use App\Models\Utilisateur;
 
 class ActiviteRepository
 {
@@ -34,5 +35,21 @@ class ActiviteRepository
     {
         $data['est_actif'] = true;
         return ActiviteDetente::create($data);
+    }
+
+    public function toggleFavori($userId, $activiteId)
+    {
+        $utilisateur = \App\Models\Utilisateur::find($userId);
+        if (!$utilisateur) {
+            return null;
+        }
+        return $utilisateur->activitesFavoris()->toggle($activiteId);
+    }
+
+    public function getFavorisByUtilisateur($userId)
+    {
+        $utilisateur = Utilisateur::find($userId);
+
+        return $utilisateur->activitesFavoris()->with(['categorie', 'type'])->get();
     }
 }

@@ -97,4 +97,33 @@ class ActiviteController extends Controller
             'data' => $activite
         ], 201);
     }
+
+    public function toggleFavori(Request $request, $id): JsonResponse
+    {
+        $userId = $request->user()->id_utilisateur; // Récupère l'ID du user connecté
+
+        $result = $this->activiteService->toggleFavori($userId, $id);
+
+        if (!$result) {
+            return response()->json(['message' => 'Utilisateur non trouvé'], 404);
+        }
+
+        $attached = count($result['attached']) > 0;
+
+        return response()->json([
+            'message' => $attached ? 'Activité ajoutée aux favoris' : 'Activité retirée des favoris',
+            'is_favori' => $attached
+        ], 200);
+    }
+
+    public function getFavoris(Request $request): JsonResponse
+    {
+        $userId = $request->user()->id_utilisateur;
+        $favoris = $this->activiteService->getFavorisByUtilisateur($userId);
+
+        return response()->json([
+            'status' => 'success',
+            'data' => $favoris
+        ]);
+    }
 }
