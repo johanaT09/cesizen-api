@@ -72,3 +72,6 @@ Route::post('/activite', [ActiviteController::class, 'addActivite']);
 
 // Modifier une activité
 Route::put('/activite/{id}', [ActiviteController::class, 'update']);
+
+// Désactiver une activité
+Route::patch('/activite/{id}/desactiver', [ActiviteController::class, 'disableActivite']);

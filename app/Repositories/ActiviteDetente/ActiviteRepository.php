@@ -66,4 +66,18 @@ class ActiviteRepository
 
         return $activite;
     }
+
+    public function disableActivite($id)
+    {
+        $activite = ActiviteDetente::find($id);
+
+        if (!$activite) {
+            return null;
+        }
+
+        $activite->est_actif = false;
+        $activite->save();
+
+        return $activite;
+    }
 }

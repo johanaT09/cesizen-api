@@ -52,4 +52,9 @@ class ActiviteService
     {
         return $this->activiteRepository->updateActivite($id, $data);
     }
+
+    public function desactiverActivite($id)
+    {
+        return $this->activiteRepository->disableActivite($id);
+    }
 }
