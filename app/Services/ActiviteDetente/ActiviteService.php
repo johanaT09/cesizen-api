@@ -47,4 +47,9 @@ class ActiviteService
     {
         return $this->activiteRepository->getFavorisByUtilisateur($userId);
     }
+
+    public function updateActivite($id, array $data)
+    {
+        return $this->activiteRepository->updateActivite($id, $data);
+    }
 }

@@ -69,3 +69,6 @@ Route::get('/activites/categorie/{categorieId}', [ActiviteController::class, 'ge
 
 // Ajouter une activité
 Route::post('/activite', [ActiviteController::class, 'addActivite']);
+
+// Modifier une activité
+Route::put('/activite/{id}', [ActiviteController::class, 'update']);

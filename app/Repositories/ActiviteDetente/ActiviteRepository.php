@@ -52,4 +52,18 @@ class ActiviteRepository
 
         return $utilisateur->activitesFavoris()->with(['categorie', 'type'])->get();
     }
+
+    public function updateActivite($id, array $data)
+    {
+        $activite = ActiviteDetente::find($id);
+
+        if (!$activite) {
+            return null;
+        }
+
+        $activite->fill($data);
+        $activite->save();
+
+        return $activite;
+    }
 }
