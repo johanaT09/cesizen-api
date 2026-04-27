@@ -23,6 +23,10 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout']);
     // Modification des informations utilisateur connecté (prenom, date_naissance, id_genre)
     Route::put('/utilisateur', [UtilisateurController::class, 'updateUtilisateur']);
+    // Route pour ajouter/retirer un favori
+    Route::post('/activites/{id}/favori', [ActiviteController::class, 'toggleFavori']);
+    // Route pour récupérer les favoris de l'utilisateur connecté
+    Route::get('/favoris', [ActiviteController::class, 'getFavoris']);
 });
 
 // Liste les catégories d'informations

@@ -37,4 +37,14 @@ class ActiviteService
     {
         return $this->activiteRepository->createActivite($data);
     }
+
+    public function toggleFavori($userId, $activiteId)
+    {
+        return $this->activiteRepository->toggleFavori($userId, $activiteId);
+    }
+
+    public function getFavorisByUtilisateur($userId)
+    {
+        return $this->activiteRepository->getFavorisByUtilisateur($userId);
+    }
 }
