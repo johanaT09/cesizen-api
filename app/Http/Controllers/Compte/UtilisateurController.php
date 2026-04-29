@@ -113,4 +113,35 @@ class UtilisateurController extends Controller
             'data' => $utilisateur
         ]);
     }
+
+    public function createUtilisateurByAdmin(Request $request): JsonResponse
+    {
+        try {
+            $validated = $request->validate([
+                'prenom'            => 'required|string|max:255',
+                'email'             => 'required|email|unique:utilisateur,email',
+                'mot_de_passe'      => 'required|string|min:6',
+                'date_naissance'    => 'required|date',
+                'id_genre'          => 'required|exists:genre_utilisateur,id_genre',
+                'id_role'           => 'required|exists:role,id_role',
+                'est_actif'         => 'sometimes|boolean',
+            ]);
+
+            // Préparation des données pour le service
+            $data = $validated;
+            $data['mot_de_passe'] = bcrypt($validated['mot_de_passe']);
+            $data['consentement_rgpd'] = now(); // On valide par défaut
+            $data['est_actif'] = $validated['est_actif'] ?? true;
+
+            $utilisateur = $this->utilisateurService->createUtilisateurByAdmin($data);
+
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Compte créé avec succès par l\'administrateur',
+                'data' => $utilisateur
+            ], 201);
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            return response()->json(['errors' => $e->errors()], 422);
+        }
+    }
 }

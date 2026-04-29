@@ -39,4 +39,9 @@ class UtilisateurRepository
 
         return $utilisateur;
     }
+
+    public function createUtilisateurByAdmin($data)
+    {
+        return Utilisateur::create($data);
+    }
 }
