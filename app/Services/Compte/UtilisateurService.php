@@ -39,4 +39,9 @@ class UtilisateurService
     {
         return $this->utilisateurRepository->updateUtilisateur($id, $data);
     }
+
+    public function createUtilisateurByAdmin($data)
+    {
+        return $this->utilisateurRepository->createUtilisateurByAdmin($data);
+    }
 }
