@@ -24,8 +24,18 @@ class UtilisateurService
         $data['mot_de_passe'] = bcrypt($data['mot_de_passe']);
         return $this->utilisateurRepository->createUtilisateur($data);
     }
-    
+
     public function updateUtilisateur($id, $data)
+    {
+        return $this->utilisateurRepository->updateUtilisateur($id, $data);
+    }
+
+    public function getAllUtilisateurs()
+    {
+        return $this->utilisateurRepository->getAllUtilisateurs();
+    }
+
+    public function updateUtilisateurByAdmin($id, array $data)
     {
         return $this->utilisateurRepository->updateUtilisateur($id, $data);
     }

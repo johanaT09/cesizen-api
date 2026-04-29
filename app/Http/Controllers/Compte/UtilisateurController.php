@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Compte;
 use Illuminate\Http\Request;
 use App\Services\Compte\UtilisateurService;
 use App\Http\Controllers\Controller;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 class UtilisateurController extends Controller
 {
@@ -45,7 +46,7 @@ class UtilisateurController extends Controller
         }
     }
 
-    
+
     public function updateUtilisateur(Request $request)
     {
         try {
@@ -73,5 +74,43 @@ class UtilisateurController extends Controller
         } catch (\Exception $e) {
             return response()->json(['message' => 'Erreur serveur'], 500);
         }
+    }
+
+    public function getUtilisateursComptes(): JsonResponse
+    {
+        $utilisateurs = $this->utilisateurService->getAllUtilisateurs();
+        return response()->json([
+            'status' => 'success',
+            'data' => $utilisateurs
+        ]);
+    }
+
+    public function updateUtilisateurByAdmin(Request $request, $id): JsonResponse
+    {
+        $validated = $request->validate([
+            'prenom'         => 'sometimes|string|max:255',
+            'date_naissance' => 'sometimes|date',
+            'id_genre'       => 'sometimes|exists:genre_utilisateur,id_genre',
+            'mot_de_passe'   => 'sometimes|string|min:6',
+            'est_actif'      => 'sometimes|boolean',
+            'email'          => 'sometimes|email|unique:utilisateur,email,' . $id . ',id_utilisateur',
+            'id_role'        => 'sometimes|exists:role,id_role',
+        ]);
+
+        if (isset($validated['mot_de_passe'])) {
+            $validated['mot_de_passe'] = bcrypt($validated['mot_de_passe']);
+        }
+
+        $utilisateur = $this->utilisateurService->updateUtilisateur($id, $validated);
+
+        if (!$utilisateur) {
+            return response()->json(['message' => 'Utilisateur non trouvé'], 404);
+        }
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Compte utilisateur mis à jour',
+            'data' => $utilisateur
+        ]);
     }
 }
