@@ -4,6 +4,7 @@ namespace App\Services\Compte;
 
 use App\Repositories\Compte\UtilisateurRepository;
 use App\Models\Role;
+use Illuminate\Support\Str;
 
 class UtilisateurService
 {
@@ -43,5 +44,23 @@ class UtilisateurService
     public function createUtilisateurByAdmin($data)
     {
         return $this->utilisateurRepository->createUtilisateurByAdmin($data);
+    }
+
+    public function desactiverUtilisateurByAdmin($id)
+    {
+        return $this->utilisateurRepository->updateUtilisateurByAdmin($id, [
+            'est_actif' => false
+        ]);
+    }
+
+    public function anonymiserUtilisateurByAdmin($id)
+    {
+        return $this->utilisateurRepository->updateUtilisateurByAdmin($id, [
+            'prenom'             => 'Anonyme',
+            'email'              => 'anonyme_' . $id . '_' . uniqid() . '@cesizen.fr',
+            'mot_de_passe'       => bcrypt(str::random(16)), // Mot de passe aléatoire inutilisable
+            'est_actif'          => false,
+            'date_anonymisation' => now(),
+        ]);
     }
 }

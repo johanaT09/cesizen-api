@@ -144,4 +144,22 @@ class UtilisateurController extends Controller
             return response()->json(['errors' => $e->errors()], 422);
         }
     }
+
+    public function desactiverUtilisateurByAdmin(Request $request, $id)
+    {
+        $utilisateur = $this->utilisateurService->desactiverUtilisateurByAdmin($id);
+        if (!$utilisateur) {
+            return response()->json(['message' => 'Utilisateur non trouvé'], 404);
+        }
+        return response()->json(['message' => 'Compte désactivé avec succès'], 200);
+    }
+
+    public function supprimerUtilisateurByAdmin(Request $request, $id)
+    {
+        $utilisateur = $this->utilisateurService->anonymiserUtilisateurByAdmin($id);
+        if (!$utilisateur) {
+            return response()->json(['message' => 'Utilisateur non trouvé'], 404);
+        }
+        return response()->json(['message' => 'Compte anonymisé et supprimé (RGPD)'], 200);
+    }
 }

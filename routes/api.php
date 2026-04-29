@@ -52,6 +52,8 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::put('/activite/{id}', [ActiviteController::class, 'update']); // Modifier une activité
         Route::get('/utilisateurs', [UtilisateurController::class, 'getUtilisateursComptes']); // Récupérer la liste de tous les utilisateurs
         Route::put('/utilisateur/{id}', [UtilisateurController::class, 'updateUtilisateurByAdmin']); // Modifier les informations d'un utilisateur (admin)
-        Route::post('/utilisateur/admin-create', [UtilisateurController::class, 'createUtilisateurByAdmin']);
-    }); 
+        Route::post('/utilisateur/admin-create', [UtilisateurController::class, 'createUtilisateurByAdmin']); // Créer un utilisateur (admin)
+        Route::patch('/utilisateur/{id}/desactiver', [UtilisateurController::class, 'desactiverUtilisateurByAdmin']); // Désactiver un compte utilisateur   
+        Route::delete('/utilisateur/{id}', [UtilisateurController::class, 'supprimerutilisateurByAdmin']); // Supprimer un compte (Anonymisation + est_actif = false)
+    });
 });
