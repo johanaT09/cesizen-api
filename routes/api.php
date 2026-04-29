@@ -50,7 +50,7 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::post('/activite', [ActiviteController::class, 'addActivite']); // Ajouter une activité
         Route::patch('/activite/{id}/desactiver', [ActiviteController::class, 'disableActivite']); // Désactiver une activité
         Route::put('/activite/{id}', [ActiviteController::class, 'update']); // Modifier une activité
-        Route::get('/utilisateurs', [UtilisateurController::class, 'index']); // Récupérer la liste de tous les utilisateurs
-        Route::put('/utilisateurs/{id}', [UtilisateurController::class, 'updateAdmin']); // Modifier les informations d'un utilisateur (admin)
+        Route::get('/utilisateurs', [UtilisateurController::class, 'getUtilisateursComptes']); // Récupérer la liste de tous les utilisateurs
+        Route::put('/utilisateur/{id}', [UtilisateurController::class, 'updateUtilisateurByAdmin']); // Modifier les informations d'un utilisateur (admin)
     }); 
 });

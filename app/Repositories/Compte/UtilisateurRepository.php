@@ -10,7 +10,7 @@ class UtilisateurRepository
     {
         return Utilisateur::create($data);
     }
-    
+
     public function updateUtilisateur($id, $data)
     {
         $utilisateur = Utilisateur::find($id);
@@ -19,6 +19,24 @@ class UtilisateurRepository
         }
         $utilisateur->fill($data);
         $utilisateur->save();
+        return $utilisateur;
+    }
+
+    public function getAllUtilisateurs()
+    {
+        return Utilisateur::with('role')->get();
+    }
+
+    public function updateUtilisateurByAdmin($id, array $data)
+    {
+        $utilisateur = Utilisateur::find($id);
+        if (!$utilisateur) {
+            return null;
+        }
+
+        $utilisateur->fill($data);
+        $utilisateur->save();
+
         return $utilisateur;
     }
 }
