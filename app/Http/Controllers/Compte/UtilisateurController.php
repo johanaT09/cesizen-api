@@ -24,25 +24,34 @@ class UtilisateurController extends Controller
             }
 
             $validated = $request->validate([
-                'prenom' => 'required|string',
-                'date_naissance' => 'required|date',
-                'id_genre' => 'required|exists:genre_utilisateur,id_genre',
-                'email' => 'required|email|unique:utilisateur,email',
-                'mot_de_passe' => 'required|string|min:6',
+                'prenom'            => 'required|string|max:255',
+                'date_naissance'    => 'required|date',
+                'id_genre'          => 'required|exists:genre_utilisateur,id_genre',
+                'email'             => 'required|email|unique:utilisateur,email',
+                'mot_de_passe'      => 'required|string|min:6',
                 'consentement_rgpd' => 'required|boolean',
             ]);
 
             $utilisateur = $this->utilisateurService->signUp($validated);
-            return response()->json(['message' => 'Création compte réussie'], 201);
-        } catch (\Illuminate\Validation\ValidationException $e) {
+
+            $token = $utilisateur->createToken('auth_token')->plainTextToken;
+
             return response()->json([
-                'message' => 'Champs requis',
-                'errors' => $e->errors()
+                'message' => 'Création de compte réussie',
+                'token'   => $token,
+                'user'    => $utilisateur // Optionnel : retourner l'utilisateur créé
+            ], 201);
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            $errors = $e->errors();
+            if (isset($errors['email'])) {
+                $errors['email'][0] = "Cette adresse email est déjà associée à un compte.";
+            }
+            return response()->json([
+                'message' => 'Données invalides',
+                'errors'  => $errors
             ], 422);
-        } catch (\Symfony\Component\HttpKernel\Exception\BadRequestHttpException $e) {
-            return response()->json(['message' => 'Requête mal formée'], 400);
         } catch (\Exception $e) {
-            return response()->json(['message' => 'Erreur serveur'], 500);
+            return response()->json(['message' => 'Erreur serveur : ' . $e->getMessage()], 500);
         }
     }
 

@@ -9,7 +9,6 @@ use App\Http\Controllers\Informations\InformationController;
 use App\Http\Controllers\ActiviteDetente\TypeActiviteController;
 use App\Http\Controllers\ActiviteDetente\ActiviteController;
 
-
 // Route accessible sans authentification
 
 // Gestion du compte utilisateur : 
