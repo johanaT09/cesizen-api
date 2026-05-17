@@ -13,11 +13,10 @@ class InformationService
         $this->informationRepository = $informationRepository;
     }
 
-    public function getAllInformations()
+    public function getAllInformations($search = null, $categoryId = null) 
     {
-        return $this->informationRepository->getAllInformations();
+        return $this->informationRepository->getAllInformations($search, $categoryId);
     }
-
     public function getInformationById($id)
     {
         return $this->informationRepository->getInformationById($id);

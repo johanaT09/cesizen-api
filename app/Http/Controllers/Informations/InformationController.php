@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Informations;
 use App\Http\Controllers\Controller;
 use App\Services\Informations\InformationService;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 
 class InformationController extends Controller
 {
@@ -15,9 +16,12 @@ class InformationController extends Controller
         $this->informationService = $informationService;
     }
 
-    public function getInformations(): JsonResponse
+    public function getInformations(Request $request): JsonResponse
     {
-        $informations = $this->informationService->getAllInformations();
+        $search = $request->query('search');
+        $categoryId = $request->query('category_id');
+
+        $informations = $this->informationService->getAllInformations($search, $categoryId); 
 
         return response()->json([
             'status' => 'success',
