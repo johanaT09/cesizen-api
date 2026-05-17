@@ -18,7 +18,7 @@ Route::post('/login', [AuthController::class, 'login']); // Connexion utilisateu
 
 // Informations : 
 Route::get('/informations', [InformationController::class, 'getInformations']); // Liste toutes les informations
-Route::get('/informations/{id}', [InformationController::class, 'getInformationById']); // Récupérer une information précise par son ID
+Route::get('/information/{id}', [InformationController::class, 'getInformationById']); // Récupérer une information précise par son ID
 
 // Catégories (Informations et Activités de détente) :
 Route::get('/categories', [CategorieActiviteController::class, 'getAllCategories']); // Liste les catégories d'informations

@@ -8,7 +8,7 @@ class CategorieActiviteRepository
 {
     public function getAllCategories()
     {
-        return CategorieActivite::all(['libelle_categorie']);
+        return CategorieActivite::all(['id_categorie', 'libelle_categorie']);
     }
 
     public function AddCategorieActivite(array $data)
@@ -17,14 +17,14 @@ class CategorieActiviteRepository
     }
 
     public function updateCategorieActivite($id, $data)
-{
-    $categorie = CategorieActivite::find($id);
-    
-    if (!$categorie) {
-        return null;
-    }
+    {
+        $categorie = CategorieActivite::find($id);
 
-    $categorie->update($data); 
-    return $categorie;
-}
+        if (!$categorie) {
+            return null;
+        }
+
+        $categorie->update($data);
+        return $categorie;
+    }
 }

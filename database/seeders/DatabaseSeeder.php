@@ -92,7 +92,7 @@ class DatabaseSeeder extends Seeder
         }
 
         // Création d'informations
-        for ($i = 0; $i < 5; $i++) {
+        for ($i = 0; $i < 20; $i++) {
             Information::create([
                 'titre_information' => 'Info ' . $i,
                 'contenu_information' => 'Contenu info ' . $i,
