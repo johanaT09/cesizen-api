@@ -13,9 +13,9 @@ class ActiviteService
         $this->activiteRepository = $activiteRepository;
     }
 
-    public function getAllActivites()
+    public function getAllActivites($search = null, $catId = null, $typeId = null)
     {
-        return $this->activiteRepository->getAllActivites();
+        return $this->activiteRepository->getAllActivites($search, $catId, $typeId);
     }
 
     public function getActiviteById($id)

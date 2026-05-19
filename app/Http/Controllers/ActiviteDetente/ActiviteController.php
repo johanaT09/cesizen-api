@@ -16,15 +16,19 @@ class ActiviteController extends Controller
         $this->activiteService = $activiteService;
     }
 
-    public function getAllActivites(): JsonResponse
+    public function getAllActivites(Request $request): JsonResponse
     {
-        $activites = $this->activiteService->getAllActivites();
+        $search = $request->query('search');
+        $catId = $request->query('category_id');
+        $typeId = $request->query('type_id');
+
+        $activites = $this->activiteService->getAllActivites($search, $catId, $typeId);
 
         return response()->json([
             'status' => 'success',
             'data' => $activites
         ]);
-    }
+    }  
 
     public function getActiviteById($id): JsonResponse
     {
