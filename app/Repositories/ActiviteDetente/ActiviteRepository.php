@@ -7,9 +7,24 @@ use App\Models\Utilisateur;
 
 class ActiviteRepository
 {
-    public function getAllActivites()
+    public function getAllActivites($search = null, $catId = null, $typeId = null)
     {
-        return ActiviteDetente::with(['categorie', 'type'])->get();
+        $query = ActiviteDetente::with(['categorie', 'type'])
+            ->where('est_actif', true);
+
+        if ($search !== null && $search !== '') {
+            $query->where('titre_activite', 'ILIKE', '%' . $search . '%');
+        }
+
+        if ($catId) {
+            $query->where('id_categorie', $catId);
+        }
+
+        if ($typeId) {
+            $query->where('id_type', $typeId);
+        }
+
+        return $query->orderBy('id_activite', 'asc')->paginate(9);
     }
 
     public function getActiviteById($id)
