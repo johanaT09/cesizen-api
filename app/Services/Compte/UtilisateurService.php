@@ -5,6 +5,7 @@ namespace App\Services\Compte;
 use App\Repositories\Compte\UtilisateurRepository;
 use App\Models\Role;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Hash;
 
 class UtilisateurService
 {
@@ -26,11 +27,44 @@ class UtilisateurService
         return $this->utilisateurRepository->createUtilisateur($data);
     }
 
+    public function getUtilisateurById($id)
+    {
+        return $this->utilisateurRepository->findById($id);
+    }
+
     public function updateUtilisateur($id, $data)
     {
+        $user = $this->utilisateurRepository->findById($id);
+        if (!$user) {
+            return null;
+        }
+
+        if (!empty($data['current_password'])) {
+            if (!Hash::check($data['current_password'], $user->mot_de_passe)) {
+                throw new \InvalidArgumentException('Votre mot de passe actuel est incorrect.');
+            }
+
+            $data['mot_de_passe'] = bcrypt($data['new_password']);
+        }
+
+        unset($data['current_password'], $data['new_password'], $data['new_password_confirmation']);
+
         return $this->utilisateurRepository->updateUtilisateur($id, $data);
     }
 
+    public function anonymiserCompte(int $userId)
+    {
+        $data = [
+            'prenom' => 'Anonyme',
+            'email' => 'supprime_' . $userId . '_' . time() . '@domaine.com',
+            'mot_de_passe' => Hash::make(Str::random(60)),
+            'est_actif' => false,
+            'date_anonymisation' => now(),
+        ];
+
+        return $this->utilisateurRepository->updateAnonymization($userId, $data);
+    }
+    
     public function getAllUtilisateurs()
     {
         return $this->utilisateurRepository->getAllUtilisateurs();

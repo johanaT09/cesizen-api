@@ -39,7 +39,7 @@ class UtilisateurController extends Controller
             return response()->json([
                 'message' => 'Création de compte réussie',
                 'token'   => $token,
-                'user'    => $utilisateur // Optionnel : retourner l'utilisateur créé
+                'user'    => $utilisateur 
             ], 201);
         } catch (\Illuminate\Validation\ValidationException $e) {
             $errors = $e->errors();
@@ -55,6 +55,19 @@ class UtilisateurController extends Controller
         }
     }
 
+    public function getMonProfil(Request $request)
+    {
+        $utilisateur = $this->utilisateurService->getUtilisateurById($request->user()->id_utilisateur);
+
+        return response()->json([
+            'prenom' => $utilisateur->prenom,
+            'email' => $utilisateur->email,
+            'date_naissance' => $utilisateur->date_naissance,
+            'id_genre' => $utilisateur->id_genre,
+            'libelle_genre' => $utilisateur->genre ? $utilisateur->genre->libelle_genre : null // Le libellé ici
+        ]);
+    }
+
 
     public function updateUtilisateur(Request $request)
     {
@@ -64,27 +77,51 @@ class UtilisateurController extends Controller
             }
 
             $validated = $request->validate([
-                'prenom' => 'sometimes|required|string',
-                'date_naissance' => 'sometimes|required|date',
-                'id_genre' => 'sometimes|required|exists:genre_utilisateur,id_genre',
+                'prenom'                    => 'sometimes|required|string|max:255',
+                'date_naissance'            => 'sometimes|required|date',
+                'id_genre'                  => 'sometimes|required|exists:genre_utilisateur,id_genre',
+                'current_password'          => 'nullable|string',
+                'new_password'              => 'nullable|string|min:8|required_with:current_password',
+                'new_password_confirmation' => 'nullable|string|required_with:new_password|same:new_password',
+            ], [
+                'new_password.required_with'   => 'Le nouveau mot de passe est obligatoire pour changer de mot de passe.',
+                'new_password_confirmation.same' => 'La confirmation du nouveau mot de passe ne correspond pas.',
             ]);
 
             $user = $request->user();
+
             $utilisateur = $this->utilisateurService->updateUtilisateur($user->id_utilisateur, $validated);
+
             if (!$utilisateur) {
                 return response()->json(['message' => "Utilisateur non trouvé"], 404);
             }
-            return response()->json(['message' => 'Utilisateur mis à jour', 'utilisateur' => $utilisateur], 200);
+
+            return response()->json(['message' => 'Utilisateur mis à jour avec succès', 'utilisateur' => $utilisateur], 200);
         } catch (\Illuminate\Validation\ValidationException $e) {
             return response()->json([
-                'message' => 'Champs requis',
-                'errors' => $e->errors()
+                'message' => 'Champs requis ou invalides',
+                'errors'  => $e->errors()
+            ], 422);
+        } catch (\InvalidArgumentException $e) {
+            return response()->json([
+                'message' => $e->getMessage()
             ], 422);
         } catch (\Exception $e) {
-            return response()->json(['message' => 'Erreur serveur'], 500);
+            return response()->json(['message' => 'Erreur serveur : ' . $e->getMessage()], 500);
         }
     }
 
+    public function supprimerUtilisateurByUser(Request $request)
+    {
+        $user = $request->user();
+
+        try {
+            $this->utilisateurService->anonymiserCompte($user->id_utilisateur);
+            return response()->json(['message' => 'Compte anonymisé avec succès.'], 200);
+        } catch (\Exception $e) {
+            return response()->json(['message' => 'Erreur lors du traitement.'], 500);
+        }
+    }
     public function getUtilisateursComptes(): JsonResponse
     {
         $utilisateurs = $this->utilisateurService->getAllUtilisateurs();
