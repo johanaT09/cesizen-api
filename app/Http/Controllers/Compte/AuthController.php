@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Compte;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Services\Compte\AuthService;
+use Illuminate\Validation\ValidationException;
 
 class AuthController extends Controller
 {
@@ -22,28 +23,29 @@ class AuthController extends Controller
                 'email' => 'required|email',
                 'mot_de_passe' => 'required|string',
             ]);
+
             $result = $this->authService->login($validated['email'], $validated['mot_de_passe']);
+            $user = $result['user'];
+
             return response()->json([
                 'message' => 'Connexion réussie',
-                'user' => $result['user'],
-                'token' => $result['token']
+                'token' => $result['token'],
+                'user' => [
+                    'id_utilisateur' => $user->id_utilisateur,
+                    'prenom' => $user->prenom,
+                    'email' => $user->email,
+                    'id_role' => (int) $user->id_role,
+                ]
             ], 200);
-        } catch (\Illuminate\Validation\ValidationException $e) {
+        } catch (ValidationException $e) {
             return response()->json([
-                'message' => 'Champs requis',
+                'message' => 'Données de connexion manquantes ou mal formatées.',
                 'errors' => $e->errors()
             ], 422);
         } catch (\Exception $e) {
-            return response()->json(['message' => $e->getMessage()], 401);
+            return response()->json([
+                'message' => $e->getmessage() ?: 'Identifiants incorrects.'
+            ], 401);
         }
     }
-
-    public function logout(Request $request)
-{
-    $this->authService->logout($request->user());
-
-    return response()->json([
-        'message' => 'Déconnexion réussie. Token supprimé.'
-    ], 200);
-}
 }

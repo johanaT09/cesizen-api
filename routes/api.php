@@ -37,9 +37,11 @@ Route::get('/activites/categorie/{categorieId}', [ActiviteController::class, 'ge
 Route::middleware('auth:sanctum')->group(function () {
 
     Route::post('/logout', [AuthController::class, 'logout']);  // Déconnexion utilisateur
+    Route::get('/mon-profil', [UtilisateurController::class, 'getMonProfil']); // Récupérer les informations utilisateur connecté
     Route::put('/utilisateur', [UtilisateurController::class, 'updateUtilisateur']); // Modification des informations utilisateur connecté (prenom, date_naissance, id_genre)
     Route::post('/activites/{id}/favori', [ActiviteController::class, 'toggleFavori']); // Route pour ajouter/retirer un favori
     Route::get('/favoris', [ActiviteController::class, 'getFavoris']); // Route pour récupérer les favoris de l'utilisateur connecté
+    Route::delete('/supprimer-compte', [UtilisateurController::class, 'supprimerUtilisateurByUser']); // Supprimer son compte (Anonymisation + est_actif = false)
 
     // Routes accessibles uniquement aux administrateurs
     Route::middleware('admin')->group(function () {
