@@ -16,6 +16,8 @@ return new class extends Migration
             $table->string('titre_activite', 50)->nullable();
             $table->text('contenu_activite')->nullable();
             $table->integer('duree_estimee')->nullable();
+            $table->string('image_path', 255)->nullable();
+            $table->string('lien_ressource', 255)->nullable();
             $table->boolean('est_actif')->nullable();
             $table->unsignedInteger('id_type');
             $table->unsignedInteger('id_categorie');

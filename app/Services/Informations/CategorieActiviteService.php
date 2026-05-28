@@ -27,4 +27,9 @@ class CategorieActiviteService
     {
         return $this->categorieActiviteRepository->updateCategorieActivite($id, $data);
     }
+
+    public function deleteCategorieActivite($id)
+    {
+        return $this->categorieActiviteRepository->deleteCategorieActivite($id);
+    }
 }

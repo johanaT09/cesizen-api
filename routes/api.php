@@ -47,14 +47,22 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::middleware('admin')->group(function () {
         Route::post('/addcategorie', [CategorieActiviteController::class, 'addCategorieActivite']); // Création d'une catégorie d'information
         Route::put('/categories/{id}', [CategorieActiviteController::class, 'updateCategorieActivite']); // Modification d'une catégorie d'information
+        Route::delete('/categories/{id}', [CategorieActiviteController::class, 'deleteCategorieActivite']); // Suppression d'une catégorie d'information
         Route::post('/types-activites', [TypeActiviteController::class, 'createType']); // Ajout d'un type d'activité
         Route::post('/activite', [ActiviteController::class, 'addActivite']); // Ajouter une activité
         Route::patch('/activite/{id}/desactiver', [ActiviteController::class, 'disableActivite']); // Désactiver une activité
+        Route::get('/admin/activites', [ActiviteController::class, 'getAdminActivites']); // Récupérer toutes les activités (y compris celles désactivées) pour l'admin
         Route::put('/activite/{id}', [ActiviteController::class, 'update']); // Modifier une activité
         Route::get('/utilisateurs', [UtilisateurController::class, 'getUtilisateursComptes']); // Récupérer la liste de tous les utilisateurs
         Route::put('/utilisateur/{id}', [UtilisateurController::class, 'updateUtilisateurByAdmin']); // Modifier les informations d'un utilisateur (admin)
         Route::post('/utilisateur/admin-create', [UtilisateurController::class, 'createUtilisateurByAdmin']); // Créer un utilisateur (admin)
         Route::patch('/utilisateur/{id}/desactiver', [UtilisateurController::class, 'desactiverUtilisateurByAdmin']); // Désactiver un compte utilisateur   
         Route::delete('/utilisateur/{id}', [UtilisateurController::class, 'supprimerutilisateurByAdmin']); // Supprimer un compte (Anonymisation + est_actif = false)
+        Route::get('/roles', [UtilisateurController::class, 'getRoles']); //Afficher la liste des rôles disponibles
+
+        Route::get('/admin/informations', [InformationController::class, 'getAdminInformations']); // Récupérer toutes les informations (y compris celles désactivées) pour l'admin
+        Route::post('/information', [InformationController::class, 'createInformation']); // Créer une nouvelle information
+        Route::put('/information/{id}', [InformationController::class, 'updateInformation']); // Modifier une information existante
+        Route::patch('/information/{id}/statut', [InformationController::class, 'toggleStatus']); // Basculer le statut d'une information
     });
 });

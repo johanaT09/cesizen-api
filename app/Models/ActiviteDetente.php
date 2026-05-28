@@ -17,8 +17,10 @@ class ActiviteDetente extends Model
         'contenu_activite',
         'duree_estimee',
         'est_actif',
+        'image_path',
         'id_type',
         'id_categorie',
+        'lien_ressource',
     ];
 
     /**

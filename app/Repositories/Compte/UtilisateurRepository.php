@@ -3,6 +3,7 @@
 namespace App\Repositories\Compte;
 
 use App\Models\Utilisateur;
+use App\Models\Role;
 
 class UtilisateurRepository
 {
@@ -38,9 +39,26 @@ class UtilisateurRepository
         return Utilisateur::where('id_utilisateur', $userId)->update($data);
     }
 
-    public function getAllUtilisateurs()
+    public function getAllUtilisateurs($perPage, $search, $roleId, $status)
     {
-        return Utilisateur::with('role')->get();
+        $query = Utilisateur::with(['role', 'genre']);
+
+        if (!empty($search)) {
+            $query->where('email', 'like', '%' . $search . '%');
+        }
+
+        if (!empty($roleId)) {
+            $query->where('id_role', $roleId);
+        }
+        if ($status === 'actif') {
+            $query->where('est_actif', true);
+        } elseif ($status === 'desactive') {
+            $query->where('est_actif', false)->whereNull('date_anonymisation');
+        } elseif ($status === 'anonymise') {
+            $query->whereNotNull('date_anonymisation');
+        }
+
+        return $query->paginate($perPage);
     }
 
     public function updateUtilisateurByAdmin($id, array $data)
@@ -59,5 +77,10 @@ class UtilisateurRepository
     public function createUtilisateurByAdmin($data)
     {
         return Utilisateur::create($data);
+    }
+
+    public function getAllRoles()
+    {
+        return Role::all();
     }
 }

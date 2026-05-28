@@ -62,9 +62,9 @@ class DatabaseSeeder extends Seeder
         ]);
 
         // Création de types d'activités
-        $typeSport = TypeActivite::create(['libelle_type' => 'Détente']);
-        $typeCulture = TypeActivite::create(['libelle_type' => 'Nutrition']);
-        $typeCulture = TypeActivite::create(['libelle_type' => 'Bien-être']);
+        $typeVideo = TypeActivite::create(['libelle_type' => 'Vidéo']);
+        $typePhoto = TypeActivite::create(['libelle_type' => 'Photo']);
+        $typeExercice = TypeActivite::create(['libelle_type' => 'Exercice']);
 
         // Création de catégories d'activités
         $catBienEtre = CategorieActivite::create(['libelle_categorie' => 'Bien-être']);
@@ -72,14 +72,39 @@ class DatabaseSeeder extends Seeder
 
         // Création d'activités de détente
         $activites = collect();
-        for ($i = 0; $i < 10; $i++) {
+
+        $activites->push(ActiviteDetente::create([
+            'titre_activite' => 'Séance de détente complète',
+            'contenu_activite' => 'Prenez le temps de vous recentrer avec cette vidéo spécialement conçue pour la détente au bureau.',
+            'duree_estimee' => 15, 
+            'est_actif' => true,
+            'id_type' => $typeVideo->id_type,
+            'id_categorie' => $catBienEtre->id_categorie,
+            'image_path' => 'activites/demo_image.jpg',        
+            'lien_ressource' => 'activites/videos/detente.mp4',
+        ]));
+
+        $activites->push(ActiviteDetente::create([
+            'titre_activite' => 'Exercice de respiration',
+            'contenu_activite' => 'Inspirez profondément par le nez sur 4 temps, bloquez, puis expirez lentement par la bouche.',
+            'duree_estimee' => 5,
+            'est_actif' => true,
+            'id_type' => $typeExercice->id_type,
+            'id_categorie' => $catBienEtre->id_categorie,
+            'image_path' => 'activites/demo_image.jpg',
+            'lien_ressource' => null, 
+        ]));
+
+        for ($i = 3; $i <= 10; $i++) {
             $activites->push(ActiviteDetente::create([
                 'titre_activite' => 'Activité ' . $i,
-                'contenu_activite' => 'Description activité ' . $i,
-                'duree_estimee' => rand(30, 120),
+                'contenu_activite' => 'Description de l\'activité numéro ' . $i . '.',
+                'duree_estimee' => rand(10, 45),
                 'est_actif' => true,
-                'id_type' => rand(0, 1) ? $typeSport->id_type : $typeCulture->id_type,
+                'id_type' => rand(0, 1) ? $typePhoto->id_type : $typeExercice->id_type,
                 'id_categorie' => rand(0, 1) ? $catBienEtre->id_categorie : $catLoisir->id_categorie,
+                'image_path' => 'activites/demo_image.jpg', 
+                'lien_ressource' => null,
             ]));
         }
 
@@ -107,7 +132,7 @@ class DatabaseSeeder extends Seeder
         foreach ($utilisateurs as $utilisateur) {
             SessionActivite::create([
                 'date_session' => now()->subDays(rand(1, 30)),
-                'duree_realisee' => rand(30, 120),
+                'duree_realisee' => rand(10, 60),
                 'id_activite' => $activites->random()->id_activite,
                 'id_utilisateur' => $utilisateur->id_utilisateur,
             ]);

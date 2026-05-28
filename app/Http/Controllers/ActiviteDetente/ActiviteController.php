@@ -28,7 +28,7 @@ class ActiviteController extends Controller
             'status' => 'success',
             'data' => $activites
         ]);
-    }  
+    }
 
     public function getActiviteById($id): JsonResponse
     {
@@ -83,28 +83,11 @@ class ActiviteController extends Controller
         ]);
     }
 
-    public function addActivite(Request $request): JsonResponse
-    {
-        $validated = $request->validate([
-            'titre_activite' => 'required|string|max:255',
-            'description_activite' => 'nullable|string',
-            'lien_ressource' => 'required|string', // URL ou contenu
-            'id_type' => 'required|exists:type,id_type', // Vérifie l'existence dans la table type
-            'id_categorie' => 'required|exists:categorie_activite,id_categorie', // Vérifie dans la table categorie
-        ]);
 
-        $activite = $this->activiteService->createActivite($validated);
-
-        return response()->json([
-            'status' => 'success',
-            'message' => 'Activité ajoutée avec succès',
-            'data' => $activite
-        ], 201);
-    }
 
     public function toggleFavori(Request $request, $id): JsonResponse
     {
-        $userId = $request->user()->id_utilisateur; // Récupère l'ID du user connecté
+        $userId = $request->user()->id_utilisateur; 
 
         $result = $this->activiteService->toggleFavori($userId, $id);
 
@@ -131,18 +114,99 @@ class ActiviteController extends Controller
         ]);
     }
 
+    public function disableActivite($id): JsonResponse
+    {
+        $activite = $this->activiteService->desactiverActivite($id);
+
+        if (!$activite) {
+            return response()->json(['message' => 'Activité non trouvée'], 404);
+        }
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'L\'activité a été désactivée',
+            'data' => $activite
+        ]);
+    }
+
+    public function getAdminActivites(Request $request): JsonResponse
+    {
+        $search  = $request->query('search');
+        $catId   = $request->query('category_id');
+        $typeId  = $request->query('type_id');
+        $perPage = $request->query('per_page', 20); // 20 éléments par défaut pour l'admin
+
+        $activites = $this->activiteService->getAdminActivites($search, $catId, $typeId, $perPage);
+
+        return response()->json([
+            'status' => 'success',
+            'data' => $activites
+        ]);
+    }
+
+    public function addActivite(Request $request): JsonResponse
+    {
+        $validated = $request->validate([
+            'titre_activite'       => 'required|string|max:255',
+            'description_activite' => 'nullable|string',
+            'lien_ressource'       => 'nullable|string',
+            'duree_estimee'        => 'required|string',
+            'id_type'              => 'required|exists:type,id_type',
+            'id_categorie'         => 'required|exists:categorie_activite,id_categorie',
+            'image'                => 'required|image|mimes:jpeg,png,jpg,webp|max:2048', // 👈 "required" au lieu de "nullable"
+            'video'                => 'nullable|mimes:mp4,mov,ogg,qt,webm|max:102400',
+        ], [
+            'image.required' => 'L\'image de couverture est obligatoire.',
+            'image.image'    => 'Le fichier doit être une image valide.',
+        ]);
+
+        $validated['contenu_activite'] = $request->input('description_activite');
+        unset($validated['description_activite']);
+
+        if ($request->hasFile('image')) {
+            $path = $request->file('image')->store('activites', 'public');
+            $validated['image_path'] = $path;
+        }
+
+        if ($request->hasFile('video')) {
+            $pathVideo = $request->file('video')->store('activites/videos', 'public');
+            $validated['lien_ressource'] = $pathVideo; // On écrase le texte par le chemin du fichier
+        } elseif ($request->has('lien_ressource')) {
+            $validated['lien_ressource'] = $request->input('lien_ressource');
+        }
+
+        $activite = $this->activiteService->createActivite($validated);
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Activité ajoutée avec succès',
+            'data' => $activite
+        ], 201);
+    }
+
     public function update(Request $request, $id): JsonResponse
     {
         try {
             $validated = $request->validate([
                 'titre_activite'       => 'sometimes|required|string|max:255',
                 'description_activite' => 'sometimes|nullable|string',
-                'lien_ressource'       => 'sometimes|required|string',
+                'lien_ressource'       => 'sometimes|nullable|string',
                 'duree_estimee'        => 'sometimes|required|string',
                 'est_actif'            => 'sometimes|required|boolean',
                 'id_type'              => 'sometimes|required|exists:type,id_type',
                 'id_categorie'         => 'sometimes|required|exists:categorie_activite,id_categorie',
+                'image'                => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
             ]);
+
+            if ($request->has('description_activite')) {
+                $validated['contenu_activite'] = $request->input('description_activite');
+                unset($validated['description_activite']);
+            }
+
+            if ($request->hasFile('image')) {
+                $path = $request->file('image')->store('activites', 'public');
+                $validated['image_path'] = $path;
+            }
 
             $activite = $this->activiteService->updateActivite($id, $validated);
 
@@ -158,20 +222,5 @@ class ActiviteController extends Controller
         } catch (\Illuminate\Validation\ValidationException $e) {
             return response()->json(['errors' => $e->errors()], 422);
         }
-    }
-
-    public function disableActivite($id): JsonResponse
-    {
-        $activite = $this->activiteService->desactiverActivite($id);
-
-        if (!$activite) {
-            return response()->json(['message' => 'Activité non trouvée'], 404);
-        }
-
-        return response()->json([
-            'status' => 'success',
-            'message' => 'L\'activité a été désactivée',
-            'data' => $activite
-        ]);
     }
 }
