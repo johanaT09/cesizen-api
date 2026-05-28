@@ -21,7 +21,7 @@ class InformationController extends Controller
         $search = $request->query('search');
         $categoryId = $request->query('category_id');
 
-        $informations = $this->informationService->getAllInformations($search, $categoryId); 
+        $informations = $this->informationService->getAllInformations($search, $categoryId);
 
         return response()->json([
             'status' => 'success',
@@ -44,5 +44,56 @@ class InformationController extends Controller
             'status' => 'success',
             'data' => $information
         ]);
+    }
+
+    public function getAdminInformations(Request $request): JsonResponse
+    {
+        $search = $request->query('search');
+        $categoryId = $request->query('category_id');
+        $perPage = $request->query('per_page', 20);
+
+        $informations = $this->informationService->getAdminInformations($search, $categoryId, $perPage);
+
+        return response()->json([
+            'status' => 'success',
+            'data' => $informations
+        ]);
+    }
+
+    public function createInformation(Request $request): JsonResponse
+    {
+        $validated = $request->validate([
+            'titre_information' => 'required|string|max:255',
+            'contenu_information' => 'required|string',
+            'id_categorie' => 'required|integer|exists:categorie_activite,id_categorie',
+        ]);
+
+        $validated['id_utilisateur'] = $request->user()->id_utilisateur;
+        $validated['date_publication_information'] = now();
+        $validated['est_actif'] = true;
+
+        $information = $this->informationService->createInformation($validated);
+
+        return response()->json(['status' => 'success', 'data' => $information], 201);
+    }
+
+    public function updateInformation(Request $request, $id): JsonResponse
+    {
+        $validated = $request->validate([
+            'titre_information' => 'required|string|max:255',
+            'contenu_information' => 'required|string',
+            'id_categorie' => 'required|integer|exists:categorie_activite,id_categorie',
+            'est_actif' => 'required|boolean'
+        ]);
+
+        $information = $this->informationService->updateInformation($id, $validated);
+
+        return response()->json(['status' => 'success', 'data' => $information]);
+    }
+
+    public function toggleStatus($id): JsonResponse
+    {
+        $information = $this->informationService->toggleStatus($id);
+        return response()->json(['status' => 'success', 'data' => $information]);
     }
 }

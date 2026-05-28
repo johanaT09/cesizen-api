@@ -95,4 +95,23 @@ class ActiviteRepository
 
         return $activite;
     }
+
+    public function getAdminActivites($search = null, $catId = null, $typeId = null, $perPage = 20)
+    {
+        $query = ActiviteDetente::with(['categorie', 'type']);
+
+        if ($search !== null && $search !== '') {
+            $query->where('titre_activite', 'ILIKE', '%' . $search . '%');
+        }
+
+        if ($catId) {
+            $query->where('id_categorie', $catId);
+        }
+
+        if ($typeId) {
+            $query->where('id_type', $typeId);
+        }
+
+        return $query->orderBy('id_activite', 'asc')->paginate($perPage);
+    }
 }

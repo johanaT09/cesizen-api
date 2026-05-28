@@ -64,10 +64,10 @@ class UtilisateurService
 
         return $this->utilisateurRepository->updateAnonymization($userId, $data);
     }
-    
-    public function getAllUtilisateurs()
+
+    public function getAllUtilisateurs($perPage, $search, $roleId, $status)
     {
-        return $this->utilisateurRepository->getAllUtilisateurs();
+        return $this->utilisateurRepository->getAllUtilisateurs($perPage, $search, $roleId, $status);
     }
 
     public function updateUtilisateurByAdmin($id, array $data)
@@ -92,9 +92,14 @@ class UtilisateurService
         return $this->utilisateurRepository->updateUtilisateurByAdmin($id, [
             'prenom'             => 'Anonyme',
             'email'              => 'anonyme_' . $id . '_' . uniqid() . '@cesizen.fr',
-            'mot_de_passe'       => bcrypt(str::random(16)), // Mot de passe aléatoire inutilisable
+            'mot_de_passe'       => bcrypt(str::random(16)), 
             'est_actif'          => false,
             'date_anonymisation' => now(),
         ]);
+    }
+
+    public function getAllRoles()
+    {
+        return $this->utilisateurRepository->getAllRoles();
     }
 }

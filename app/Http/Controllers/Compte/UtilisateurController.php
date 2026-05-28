@@ -39,7 +39,7 @@ class UtilisateurController extends Controller
             return response()->json([
                 'message' => 'Création de compte réussie',
                 'token'   => $token,
-                'user'    => $utilisateur 
+                'user'    => $utilisateur
             ], 201);
         } catch (\Illuminate\Validation\ValidationException $e) {
             $errors = $e->errors();
@@ -122,9 +122,15 @@ class UtilisateurController extends Controller
             return response()->json(['message' => 'Erreur lors du traitement.'], 500);
         }
     }
-    public function getUtilisateursComptes(): JsonResponse
+    public function getUtilisateursComptes(Request $request): JsonResponse
     {
-        $utilisateurs = $this->utilisateurService->getAllUtilisateurs();
+        $perPage = $request->query('per_page', 20);
+        $search  = $request->query('search');
+        $roleId  = $request->query('role_id');
+        $status  = $request->query('status');
+
+        $utilisateurs = $this->utilisateurService->getAllUtilisateurs($perPage, $search, $roleId, $status);
+
         return response()->json([
             'status' => 'success',
             'data' => $utilisateurs
@@ -173,7 +179,6 @@ class UtilisateurController extends Controller
                 'est_actif'         => 'sometimes|boolean',
             ]);
 
-            // Préparation des données pour le service
             $data = $validated;
             $data['mot_de_passe'] = bcrypt($validated['mot_de_passe']);
             $data['consentement_rgpd'] = now(); // On valide par défaut
@@ -207,5 +212,15 @@ class UtilisateurController extends Controller
             return response()->json(['message' => 'Utilisateur non trouvé'], 404);
         }
         return response()->json(['message' => 'Compte anonymisé et supprimé (RGPD)'], 200);
+    }
+
+    public function getRoles(): JsonResponse
+    {
+        $roles = $this->utilisateurService->getAllRoles();
+
+        return response()->json([
+            'status' => 'success',
+            'data' => $roles
+        ]);
     }
 }

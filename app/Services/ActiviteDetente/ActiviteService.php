@@ -57,4 +57,9 @@ class ActiviteService
     {
         return $this->activiteRepository->disableActivite($id);
     }
+
+    public function getAdminActivites($search = null, $catId = null, $typeId = null, $perPage = 20)
+    {
+        return $this->activiteRepository->getAdminActivites($search, $catId, $typeId, $perPage);
+    }
 }
