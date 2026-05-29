@@ -64,7 +64,7 @@ class DatabaseSeeder extends Seeder
         // Création de types d'activités
         $typeVideo = TypeActivite::create(['libelle_type' => 'Vidéo']);
         $typePhoto = TypeActivite::create(['libelle_type' => 'Photo']);
-        $typeExercice = TypeActivite::create(['libelle_type' => 'Exercice']);
+        $typeExercice = TypeActivite::create(['libelle_type' => 'Article']);
 
         // Création de catégories d'activités
         $catBienEtre = CategorieActivite::create(['libelle_categorie' => 'Bien-être']);
@@ -76,11 +76,11 @@ class DatabaseSeeder extends Seeder
         $activites->push(ActiviteDetente::create([
             'titre_activite' => 'Séance de détente complète',
             'contenu_activite' => 'Prenez le temps de vous recentrer avec cette vidéo spécialement conçue pour la détente au bureau.',
-            'duree_estimee' => 15, 
+            'duree_estimee' => 15,
             'est_actif' => true,
             'id_type' => $typeVideo->id_type,
             'id_categorie' => $catBienEtre->id_categorie,
-            'image_path' => 'activites/demo_image.jpg',        
+            'image_path' => 'activites/demo_image.jpg',
             'lien_ressource' => 'activites/videos/detente.mp4',
         ]));
 
@@ -92,7 +92,7 @@ class DatabaseSeeder extends Seeder
             'id_type' => $typeExercice->id_type,
             'id_categorie' => $catBienEtre->id_categorie,
             'image_path' => 'activites/demo_image.jpg',
-            'lien_ressource' => null, 
+            'lien_ressource' => null,
         ]));
 
         for ($i = 3; $i <= 10; $i++) {
@@ -103,7 +103,7 @@ class DatabaseSeeder extends Seeder
                 'est_actif' => true,
                 'id_type' => rand(0, 1) ? $typePhoto->id_type : $typeExercice->id_type,
                 'id_categorie' => rand(0, 1) ? $catBienEtre->id_categorie : $catLoisir->id_categorie,
-                'image_path' => 'activites/demo_image.jpg', 
+                'image_path' => 'activites/demo_image.jpg',
                 'lien_ressource' => null,
             ]));
         }

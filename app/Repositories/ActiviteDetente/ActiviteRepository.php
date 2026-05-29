@@ -4,6 +4,7 @@ namespace App\Repositories\ActiviteDetente;
 
 use App\Models\ActiviteDetente;
 use App\Models\Utilisateur;
+use Illuminate\Support\Facades\DB;
 
 class ActiviteRepository
 {
@@ -113,5 +114,39 @@ class ActiviteRepository
         }
 
         return $query->orderBy('id_activite', 'asc')->paginate($perPage);
+    }
+
+    public function findSession($userId, $activiteId)
+    {
+        return DB::table('session_activite')
+            ->where('id_utilisateur', $userId)
+            ->where('id_activite', $activiteId)
+            ->first();
+    }
+
+    public function updateOrCreateSession($userId, $activiteId, $progression, $estTermine = false): bool
+    {
+        return DB::table('session_activite')->updateOrInsert(
+            [
+                'id_utilisateur' => $userId,
+                'id_activite' => $activiteId
+            ],
+            [
+                'duree_realisee' => $progression, 
+                'date_session'   => now(),
+                'est_termine'    => $estTermine      
+            ]
+        );
+    }
+
+    public function getStartedActivities($userId)
+    {
+        return ActiviteDetente::whereIn('id_activite', function ($query) use ($userId) {
+            $query->select('id_activite')
+                ->from('session_activite')
+                ->where('id_utilisateur', $userId)
+                ->where('duree_realisee', '>', 0) 
+                ->where('est_termine', false);
+        })->with(['categorie', 'type'])->get();
     }
 }

@@ -62,4 +62,21 @@ class ActiviteService
     {
         return $this->activiteRepository->getAdminActivites($search, $catId, $typeId, $perPage);
     }
+
+   public function getProgression($userId, $activiteId): int
+    {
+        $session = $this->activiteRepository->findSession($userId, $activiteId);
+
+        return $session ? (int)$session->duree_realisee : 0;
+    }
+
+    public function saveProgression($userId, $activiteId, $progression, $estTermine = false): void
+    {
+        $this->activiteRepository->updateOrCreateSession($userId, $activiteId, $progression, $estTermine);
+    }
+
+    public function getStartedActivities($userId)
+    {
+        return $this->activiteRepository->getStartedActivities($userId);
+    }
 }

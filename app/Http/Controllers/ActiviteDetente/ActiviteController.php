@@ -87,7 +87,7 @@ class ActiviteController extends Controller
 
     public function toggleFavori(Request $request, $id): JsonResponse
     {
-        $userId = $request->user()->id_utilisateur; 
+        $userId = $request->user()->id_utilisateur;
 
         $result = $this->activiteService->toggleFavori($userId, $id);
 
@@ -222,5 +222,59 @@ class ActiviteController extends Controller
         } catch (\Illuminate\Validation\ValidationException $e) {
             return response()->json(['errors' => $e->errors()], 422);
         }
+    }
+
+    public function getSession(Request $request, $id): JsonResponse
+    {
+        $userId = $request->user()->id_utilisateur;
+        $progression = $this->activiteService->getProgression($userId, $id);
+
+        return response()->json([
+            'status' => 'success',
+            'progression' => $progression
+        ]);
+    }
+
+    public function saveSession(Request $request, $id): JsonResponse
+    {
+        $userId = $request->user()->id_utilisateur;
+        $progression = $request->input('progression', 0);
+        $estTermine = $request->input('est_termine', false);
+
+        $this->activiteService->saveProgression($userId, $id, $progression, $estTermine);
+
+        return response()->json([
+            'status' => 'success'
+        ]);
+    }
+
+    public function getStartedSessions(Request $request): JsonResponse
+    {
+        $userId = $request->user()->id_utilisateur;
+        $activities = $this->activiteService->getStartedActivities($userId);
+
+        return response()->json([
+            'status' => 'success',
+            'data' => $activities
+        ]);
+    }
+
+    public function getVideoStream($id)
+    {
+        $activite = $this->activiteService->getActiviteById($id);
+
+        if (!$activite || !$activite->lien_ressource) {
+            abort(404, "Activité ou vidéo introuvable.");
+        }
+
+        $path = storage_path('app/public/' . $activite->lien_ressource);
+
+        if (!file_exists($path)) {
+            abort(404, "Le fichier vidéo n'existe pas sur le serveur.");
+        }
+
+        return response()->file($path, [
+            'Content-Type' => 'video/mp4',
+        ]);
     }
 }

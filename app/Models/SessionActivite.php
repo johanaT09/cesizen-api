@@ -17,6 +17,7 @@ class SessionActivite extends Model
         'duree_realisee',
         'id_activite',
         'id_utilisateur',
+        'est_terminee',
     ];
 
     /**

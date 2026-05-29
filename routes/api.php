@@ -31,6 +31,7 @@ Route::get('/activites/{id}', [ActiviteController::class, 'getActiviteById']); /
 Route::get('/activites/type/{typeId}', [ActiviteController::class, 'getActivitesByType']); // Liste les activités filtrées par l'ID du type
 Route::get('/activites/categorie/{categorieId}', [ActiviteController::class, 'getActivitesByCategorie']); // Liste les activités filtrées par l'ID de la catégorie
 
+Route::get('/activites/{id}/video', [ActiviteController::class, 'getVideoStream']);
 
 
 // Routes accessibles uniquement aux utilisateurs authentifiés
@@ -42,6 +43,9 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/activites/{id}/favori', [ActiviteController::class, 'toggleFavori']); // Route pour ajouter/retirer un favori
     Route::get('/favoris', [ActiviteController::class, 'getFavoris']); // Route pour récupérer les favoris de l'utilisateur connecté
     Route::delete('/supprimer-compte', [UtilisateurController::class, 'supprimerUtilisateurByUser']); // Supprimer son compte (Anonymisation + est_actif = false)
+    Route::get('/activites/{id}/session', [ActiviteController::class, 'getSession']);
+    Route::post('/activites/{id}/session', [ActiviteController::class, 'saveSession']);
+    Route::get('/sessions/en-cours', [ActiviteController::class, 'getStartedSessions']);
 
     // Routes accessibles uniquement aux administrateurs
     Route::middleware('admin')->group(function () {
