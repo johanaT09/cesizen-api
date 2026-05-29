@@ -88,8 +88,9 @@ class AuthController extends Controller
             'email'    => 'required|email|exists:utilisateur,email',
             'password' => 'required|min:8|confirmed',
         ], [
+            'password.required'  => 'Le champ mot de passe est obligatoire.',
             'password.confirmed' => 'Les deux mots de passe ne correspondent pas.',
-            'password.min' => 'Le mot de passe doit contenir au moins 8 caractères.'
+            'password.min'       => 'Le mot de passe doit contenir au moins 8 caractères.'
         ]);
 
         $record = DB::table('password_reset_tokens')->where('email', $request->email)->first();
@@ -110,7 +111,7 @@ class AuthController extends Controller
 
         DB::table('utilisateur')
             ->where('email', $request->email)
-            ->update(['password' => Hash::make($request->password)]);
+            ->update(['mot_de_passe' => Hash::make($request->password)]);
 
         DB::table('password_reset_tokens')->where('email', $request->email)->delete();
 
