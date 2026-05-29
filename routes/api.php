@@ -34,6 +34,9 @@ Route::get('/activites/categorie/{categorieId}', [ActiviteController::class, 'ge
 Route::get('/activites/{id}/video', [ActiviteController::class, 'getVideoStream']);
 
 
+Route::post('/forgot-password', [AuthController::class, 'forgotPassword'])->middleware('throttle:3,10'); // Demande de reinitialisation de mot de passe
+Route::post('/reset-password', [AuthController::class, 'resetPassword']); // Reinitialisation de mot de passe
+
 // Routes accessibles uniquement aux utilisateurs authentifiés
 Route::middleware('auth:sanctum')->group(function () {
 
