@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('duree_realisee', 50)->nullable();
             $table->unsignedInteger('id_activite');
             $table->unsignedInteger('id_utilisateur');
+            $table->boolean('est_termine')->default(false);
         });
     }
 
