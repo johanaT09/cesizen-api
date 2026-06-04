@@ -20,6 +20,9 @@ class AuthService
         if (!$user) {
             throw new \Exception('Identifiants invalides');
         }
+        if (!$user->est_actif) {
+            throw new \Exception('Ce compte a été désactivé. Veuillez contacter l\'administrateur.');
+        }
         if (!Hash::check($mot_de_passe, $user->mot_de_passe)) {
             throw new \Exception('Identifiants invalides');
         }
