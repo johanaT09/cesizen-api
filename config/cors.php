@@ -23,6 +23,7 @@ return [
         'http://localhost:3000',      // Ton Nuxt en local
         'http://localhost',           // Capacitor Android
         'https://ton-domaine.com',    // Ton futur site en prod
+        'https://ton-domaine.com',    // Production
     ],
 
     'allowed_origins_patterns' => [],
@@ -33,6 +34,6 @@ return [
 
     'max_age' => 0,
 
-    'supports_credentials' => false,
+    'supports_credentials' => true,
 
 ];
