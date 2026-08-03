@@ -1,0 +1,32 @@
+# Dépendances installées localement : elles seront réinstallées proprement dans l'image
+vendor/
+node_modules/
+
+# Fichiers de configuration sensibles ou spécifiques à la machine locale
+.env
+.env.*
+!.env.example
+
+# Git : inutile dans l'image, et peut être volumineux
+.git/
+.gitignore
+
+# Logs et caches locaux : générés à l'exécution, pas besoin de les copier
+storage/logs/
+storage/framework/cache/
+storage/framework/sessions/
+storage/framework/views/
+
+# Tests : pas nécessaires pour faire tourner l'application en production
+tests/
+phpunit.xml
+
+# Fichiers d'environnement de dev / IDE
+.idea/
+.vscode/
+*.log
+
+# Fichiers Docker eux-mêmes (pas besoin de se copier soi-même)
+Dockerfile
+docker-compose.yml
+.dockerignore
