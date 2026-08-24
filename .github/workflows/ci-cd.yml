@@ -1,0 +1,38 @@
+name: CI
+
+on:
+  pull_request:
+    branches: [dev]
+
+jobs:
+  build-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Installer PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+          extensions: pdo, pdo_pgsql, mbstring, bcmath, zip, xml, exif, pcntl, curl, gd
+
+      - name: Installer les dépendances Composer
+        run: composer install --no-interaction --prefer-dist
+
+      - name: Vérifier le style (Laravel Pint)
+        run: ./vendor/bin/pint --test
+
+      - name: Analyse statique (Larastan)
+        run: ./vendor/bin/phpstan analyse --no-progress
+
+      - name: Copier le fichier d'environnement de test
+        run: cp .env.example .env
+
+      - name: Générer la clé d'application
+        run: php artisan key:generate
+
+      - name: Lancer les tests
+        run: php artisan test
+
+      - name: Construire l'image Docker (vérification)
+        run: docker build -t cesizen-api .
