@@ -2,8 +2,8 @@
 
 namespace App\Repositories\Compte;
 
-use App\Models\Utilisateur;
 use App\Models\Role;
+use App\Models\Utilisateur;
 
 class UtilisateurRepository
 {
@@ -21,11 +21,12 @@ class UtilisateurRepository
     public function updateUtilisateur($id, $data)
     {
         $utilisateur = Utilisateur::find($id);
-        if (!$utilisateur) {
+        if (! $utilisateur) {
             return null;
         }
         $utilisateur->fill($data);
         $utilisateur->save();
+
         return $utilisateur;
     }
 
@@ -43,11 +44,11 @@ class UtilisateurRepository
     {
         $query = Utilisateur::with(['role', 'genre']);
 
-        if (!empty($search)) {
-            $query->where('email', 'like', '%' . $search . '%');
+        if (! empty($search)) {
+            $query->where('email', 'like', '%'.$search.'%');
         }
 
-        if (!empty($roleId)) {
+        if (! empty($roleId)) {
             $query->where('id_role', $roleId);
         }
         if ($status === 'actif') {
@@ -64,7 +65,7 @@ class UtilisateurRepository
     public function updateUtilisateurByAdmin($id, array $data)
     {
         $utilisateur = Utilisateur::find($id);
-        if (!$utilisateur) {
+        if (! $utilisateur) {
             return null;
         }
 

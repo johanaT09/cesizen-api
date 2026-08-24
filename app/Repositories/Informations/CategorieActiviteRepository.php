@@ -20,11 +20,12 @@ class CategorieActiviteRepository
     {
         $categorie = CategorieActivite::find($id);
 
-        if (!$categorie) {
+        if (! $categorie) {
             return null;
         }
 
         $categorie->update($data);
+
         return $categorie;
     }
 
@@ -32,7 +33,7 @@ class CategorieActiviteRepository
     {
         $categorie = CategorieActivite::find($id);
 
-        if (!$categorie) {
+        if (! $categorie) {
             return 'NOT_FOUND';
         }
 
@@ -41,6 +42,7 @@ class CategorieActiviteRepository
         }
 
         $categorie->delete();
+
         return 'SUCCESS';
     }
 }

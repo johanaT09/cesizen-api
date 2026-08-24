@@ -2,18 +2,18 @@
 
 namespace Database\Seeders;
 
-use App\Models\Utilisateur;
-use App\Models\TypeActivite;
-use App\Models\CategorieActivite;
 use App\Models\ActiviteDetente;
+use App\Models\CategorieActivite;
 use App\Models\Favori;
 use App\Models\GenreUtilisateur;
 use App\Models\Information;
 use App\Models\Role;
 use App\Models\SessionActivite;
-use Illuminate\Support\Facades\Hash;
+use App\Models\TypeActivite;
+use App\Models\Utilisateur;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Hash;
 
 class DatabaseSeeder extends Seeder
 {
@@ -36,9 +36,9 @@ class DatabaseSeeder extends Seeder
         $utilisateurs = collect();
         for ($i = 0; $i < 20; $i++) {
             $utilisateurs->push(Utilisateur::create([
-                'prenom' => 'User' . $i,
+                'prenom' => 'User'.$i,
                 'date_naissance' => now()->subYears(rand(18, 50))->format('Y-m-d'),
-                'email' => 'user' . $i . '@example.com',
+                'email' => 'user'.$i.'@example.com',
                 'mot_de_passe' => Hash::make('password'),
                 'consentement_rgpd' => now(),
                 'est_actif' => true,
@@ -97,8 +97,8 @@ class DatabaseSeeder extends Seeder
 
         for ($i = 3; $i <= 10; $i++) {
             $activites->push(ActiviteDetente::create([
-                'titre_activite' => 'Activité ' . $i,
-                'contenu_activite' => 'Description de l\'activité numéro ' . $i . '.',
+                'titre_activite' => 'Activité '.$i,
+                'contenu_activite' => 'Description de l\'activité numéro '.$i.'.',
                 'duree_estimee' => rand(10, 45),
                 'est_actif' => true,
                 'id_type' => rand(0, 1) ? $typePhoto->id_type : $typeExercice->id_type,
@@ -119,8 +119,8 @@ class DatabaseSeeder extends Seeder
         // Création d'informations
         for ($i = 0; $i < 20; $i++) {
             Information::create([
-                'titre_information' => 'Info ' . $i,
-                'contenu_information' => 'Contenu info ' . $i,
+                'titre_information' => 'Info '.$i,
+                'contenu_information' => 'Contenu info '.$i,
                 'date_publication_information' => now()->subDays(rand(1, 100)),
                 'est_actif' => true,
                 'id_categorie' => $catBienEtre->id_categorie,

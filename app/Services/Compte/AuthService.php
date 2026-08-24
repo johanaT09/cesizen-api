@@ -17,13 +17,13 @@ class AuthService
     public function login($email, $mot_de_passe)
     {
         $user = $this->authRepository->findByEmail($email);
-        if (!$user) {
+        if (! $user) {
             throw new \Exception('Identifiants invalides');
         }
-        if (!$user->est_actif) {
+        if (! $user->est_actif) {
             throw new \Exception('Ce compte a été désactivé. Veuillez contacter l\'administrateur.');
         }
-        if (!Hash::check($mot_de_passe, $user->mot_de_passe)) {
+        if (! Hash::check($mot_de_passe, $user->mot_de_passe)) {
             throw new \Exception('Identifiants invalides');
         }
 
@@ -32,9 +32,10 @@ class AuthService
         $tokenModel = $tokenResult->accessToken;
         $tokenModel->expires_at = now()->addHours(7);
         $tokenModel->save();
+
         return [
             'user' => $user,
-            'token' => $token
+            'token' => $token,
         ];
     }
 

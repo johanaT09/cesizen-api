@@ -7,7 +7,7 @@ use App\Services\Informations\CategorieActiviteService;
 use Illuminate\Http\JsonResponse;
 // use Symfony\Component\HttpFoundation\Request;
 use Illuminate\Http\Request;
-
+use Illuminate\Validation\ValidationException;
 
 class CategorieActiviteController extends Controller
 {
@@ -35,6 +35,7 @@ class CategorieActiviteController extends Controller
         ]);
 
         $categorie = $this->categorieActiviteService->AddCategorieActivite($validatedData);
+
         return response()->json($categorie, 201);
     }
 
@@ -42,7 +43,7 @@ class CategorieActiviteController extends Controller
     {
         try {
             $validated = $request->validate([
-                'libelle_categorie' => 'required|string|max:255|unique:categorie_activite,libelle_categorie,' . $id . ',id_categorie',
+                'libelle_categorie' => 'required|string|max:255|unique:categorie_activite,libelle_categorie,'.$id.',id_categorie',
             ], [
                 'libelle_categorie.unique' => 'Ce nom de catégorie est déjà utilisé.',
                 'libelle_categorie.required' => 'Le nom de la catégorie est obligatoire.',
@@ -50,15 +51,15 @@ class CategorieActiviteController extends Controller
 
             $categorie = $this->categorieActiviteService->updateCategorieActivite($id, $validated);
 
-            if (!$categorie) {
-                return response()->json(['message' => "Catégorie non trouvée"], 404);
+            if (! $categorie) {
+                return response()->json(['message' => 'Catégorie non trouvée'], 404);
             }
 
             return response()->json([
                 'message' => 'Catégorie mise à jour',
-                'data' => $categorie
+                'data' => $categorie,
             ], 200);
-        } catch (\Illuminate\Validation\ValidationException $e) {
+        } catch (ValidationException $e) {
             return response()->json(['message' => 'Validation échouée', 'errors' => $e->errors()], 422);
         } catch (\Exception $e) {
             return response()->json(['message' => 'Erreur serveur', 'error' => $e->getMessage()], 500);
@@ -71,22 +72,22 @@ class CategorieActiviteController extends Controller
             $status = $this->categorieActiviteService->deleteCategorieActivite($id);
 
             if ($status === 'NOT_FOUND') {
-                return response()->json(['message' => "Catégorie non trouvée"], 404);
+                return response()->json(['message' => 'Catégorie non trouvée'], 404);
             }
 
             if ($status === 'HAS_RELATIONS') {
                 return response()->json([
-                    'message' => "Impossible de supprimer : cette catégorie est liée à des articles d'information actifs."
+                    'message' => "Impossible de supprimer : cette catégorie est liée à des articles d'information actifs.",
                 ], 422);
             }
 
             return response()->json([
-                'message' => 'Catégorie supprimée avec succès'
+                'message' => 'Catégorie supprimée avec succès',
             ], 200);
         } catch (\Exception $e) {
             return response()->json([
                 'message' => 'Erreur serveur lors de la suppression',
-                'error' => $e->getMessage()
+                'error' => $e->getMessage(),
             ], 500);
         }
     }

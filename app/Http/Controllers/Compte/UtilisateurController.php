@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers\Compte;
 
-use Illuminate\Http\Request;
-use App\Services\Compte\UtilisateurService;
 use App\Http\Controllers\Controller;
+use App\Services\Compte\UtilisateurService;
+use Illuminate\Http\Request;
+use Illuminate\Validation\ValidationException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
 class UtilisateurController extends Controller
@@ -19,16 +20,16 @@ class UtilisateurController extends Controller
     public function signUp(Request $request)
     {
         try {
-            if ($request->header('Content-Type') !== 'application/json' && !$request->isJson()) {
+            if ($request->header('Content-Type') !== 'application/json' && ! $request->isJson()) {
                 return response()->json(['message' => 'Requête mal formée (JSON attendu)'], 400);
             }
 
             $validated = $request->validate([
-                'prenom'            => 'required|string|max:255',
-                'date_naissance'    => 'required|date',
-                'id_genre'          => 'required|exists:genre_utilisateur,id_genre',
-                'email'             => 'required|email|unique:utilisateur,email',
-                'mot_de_passe'      => 'required|string|min:6',
+                'prenom' => 'required|string|max:255',
+                'date_naissance' => 'required|date',
+                'id_genre' => 'required|exists:genre_utilisateur,id_genre',
+                'email' => 'required|email|unique:utilisateur,email',
+                'mot_de_passe' => 'required|string|min:6',
                 'consentement_rgpd' => 'required|boolean',
             ]);
 
@@ -38,20 +39,21 @@ class UtilisateurController extends Controller
 
             return response()->json([
                 'message' => 'Création de compte réussie',
-                'token'   => $token,
-                'user'    => $utilisateur
+                'token' => $token,
+                'user' => $utilisateur,
             ], 201);
-        } catch (\Illuminate\Validation\ValidationException $e) {
+        } catch (ValidationException $e) {
             $errors = $e->errors();
             if (isset($errors['email'])) {
-                $errors['email'][0] = "Cette adresse email est déjà associée à un compte.";
+                $errors['email'][0] = 'Cette adresse email est déjà associée à un compte.';
             }
+
             return response()->json([
                 'message' => 'Données invalides',
-                'errors'  => $errors
+                'errors' => $errors,
             ], 422);
         } catch (\Exception $e) {
-            return response()->json(['message' => 'Erreur serveur : ' . $e->getMessage()], 500);
+            return response()->json(['message' => 'Erreur serveur : '.$e->getMessage()], 500);
         }
     }
 
@@ -64,27 +66,26 @@ class UtilisateurController extends Controller
             'email' => $utilisateur->email,
             'date_naissance' => $utilisateur->date_naissance,
             'id_genre' => $utilisateur->id_genre,
-            'libelle_genre' => $utilisateur->genre ? $utilisateur->genre->libelle_genre : null // Le libellé ici
+            'libelle_genre' => $utilisateur->genre ? $utilisateur->genre->libelle_genre : null, // Le libellé ici
         ]);
     }
-
 
     public function updateUtilisateur(Request $request)
     {
         try {
-            if ($request->header('Content-Type') !== 'application/json' && !$request->isJson()) {
+            if ($request->header('Content-Type') !== 'application/json' && ! $request->isJson()) {
                 return response()->json(['message' => 'Requête mal formée (JSON attendu)'], 400);
             }
 
             $validated = $request->validate([
-                'prenom'                    => 'sometimes|required|string|max:255',
-                'date_naissance'            => 'sometimes|required|date',
-                'id_genre'                  => 'sometimes|required|exists:genre_utilisateur,id_genre',
-                'current_password'          => 'nullable|string',
-                'new_password'              => 'nullable|string|min:8|required_with:current_password',
+                'prenom' => 'sometimes|required|string|max:255',
+                'date_naissance' => 'sometimes|required|date',
+                'id_genre' => 'sometimes|required|exists:genre_utilisateur,id_genre',
+                'current_password' => 'nullable|string',
+                'new_password' => 'nullable|string|min:8|required_with:current_password',
                 'new_password_confirmation' => 'nullable|string|required_with:new_password|same:new_password',
             ], [
-                'new_password.required_with'   => 'Le nouveau mot de passe est obligatoire pour changer de mot de passe.',
+                'new_password.required_with' => 'Le nouveau mot de passe est obligatoire pour changer de mot de passe.',
                 'new_password_confirmation.same' => 'La confirmation du nouveau mot de passe ne correspond pas.',
             ]);
 
@@ -92,22 +93,22 @@ class UtilisateurController extends Controller
 
             $utilisateur = $this->utilisateurService->updateUtilisateur($user->id_utilisateur, $validated);
 
-            if (!$utilisateur) {
-                return response()->json(['message' => "Utilisateur non trouvé"], 404);
+            if (! $utilisateur) {
+                return response()->json(['message' => 'Utilisateur non trouvé'], 404);
             }
 
             return response()->json(['message' => 'Utilisateur mis à jour avec succès', 'utilisateur' => $utilisateur], 200);
-        } catch (\Illuminate\Validation\ValidationException $e) {
+        } catch (ValidationException $e) {
             return response()->json([
                 'message' => 'Champs requis ou invalides',
-                'errors'  => $e->errors()
+                'errors' => $e->errors(),
             ], 422);
         } catch (\InvalidArgumentException $e) {
             return response()->json([
-                'message' => $e->getMessage()
+                'message' => $e->getMessage(),
             ], 422);
         } catch (\Exception $e) {
-            return response()->json(['message' => 'Erreur serveur : ' . $e->getMessage()], 500);
+            return response()->json(['message' => 'Erreur serveur : '.$e->getMessage()], 500);
         }
     }
 
@@ -117,36 +118,38 @@ class UtilisateurController extends Controller
 
         try {
             $this->utilisateurService->anonymiserCompte($user->id_utilisateur);
+
             return response()->json(['message' => 'Compte anonymisé avec succès.'], 200);
         } catch (\Exception $e) {
             return response()->json(['message' => 'Erreur lors du traitement.'], 500);
         }
     }
+
     public function getUtilisateursComptes(Request $request): JsonResponse
     {
         $perPage = $request->query('per_page', 20);
-        $search  = $request->query('search');
-        $roleId  = $request->query('role_id');
-        $status  = $request->query('status');
+        $search = $request->query('search');
+        $roleId = $request->query('role_id');
+        $status = $request->query('status');
 
         $utilisateurs = $this->utilisateurService->getAllUtilisateurs($perPage, $search, $roleId, $status);
 
         return response()->json([
             'status' => 'success',
-            'data' => $utilisateurs
+            'data' => $utilisateurs,
         ]);
     }
 
     public function updateUtilisateurByAdmin(Request $request, $id): JsonResponse
     {
         $validated = $request->validate([
-            'prenom'         => 'sometimes|string|max:255',
+            'prenom' => 'sometimes|string|max:255',
             'date_naissance' => 'sometimes|date',
-            'id_genre'       => 'sometimes|exists:genre_utilisateur,id_genre',
-            'mot_de_passe'   => 'sometimes|string|min:6',
-            'est_actif'      => 'sometimes|boolean',
-            'email'          => 'sometimes|email|unique:utilisateur,email,' . $id . ',id_utilisateur',
-            'id_role'        => 'sometimes|exists:role,id_role',
+            'id_genre' => 'sometimes|exists:genre_utilisateur,id_genre',
+            'mot_de_passe' => 'sometimes|string|min:6',
+            'est_actif' => 'sometimes|boolean',
+            'email' => 'sometimes|email|unique:utilisateur,email,'.$id.',id_utilisateur',
+            'id_role' => 'sometimes|exists:role,id_role',
         ]);
 
         if (isset($validated['mot_de_passe'])) {
@@ -155,14 +158,14 @@ class UtilisateurController extends Controller
 
         $utilisateur = $this->utilisateurService->updateUtilisateur($id, $validated);
 
-        if (!$utilisateur) {
+        if (! $utilisateur) {
             return response()->json(['message' => 'Utilisateur non trouvé'], 404);
         }
 
         return response()->json([
             'status' => 'success',
             'message' => 'Compte utilisateur mis à jour',
-            'data' => $utilisateur
+            'data' => $utilisateur,
         ]);
     }
 
@@ -170,13 +173,13 @@ class UtilisateurController extends Controller
     {
         try {
             $validated = $request->validate([
-                'prenom'            => 'required|string|max:255',
-                'email'             => 'required|email|unique:utilisateur,email',
-                'mot_de_passe'      => 'required|string|min:6',
-                'date_naissance'    => 'required|date',
-                'id_genre'          => 'required|exists:genre_utilisateur,id_genre',
-                'id_role'           => 'required|exists:role,id_role',
-                'est_actif'         => 'sometimes|boolean',
+                'prenom' => 'required|string|max:255',
+                'email' => 'required|email|unique:utilisateur,email',
+                'mot_de_passe' => 'required|string|min:6',
+                'date_naissance' => 'required|date',
+                'id_genre' => 'required|exists:genre_utilisateur,id_genre',
+                'id_role' => 'required|exists:role,id_role',
+                'est_actif' => 'sometimes|boolean',
             ]);
 
             $data = $validated;
@@ -189,9 +192,9 @@ class UtilisateurController extends Controller
             return response()->json([
                 'status' => 'success',
                 'message' => 'Compte créé avec succès par l\'administrateur',
-                'data' => $utilisateur
+                'data' => $utilisateur,
             ], 201);
-        } catch (\Illuminate\Validation\ValidationException $e) {
+        } catch (ValidationException $e) {
             return response()->json(['errors' => $e->errors()], 422);
         }
     }
@@ -199,18 +202,20 @@ class UtilisateurController extends Controller
     public function desactiverUtilisateurByAdmin(Request $request, $id)
     {
         $utilisateur = $this->utilisateurService->desactiverUtilisateurByAdmin($id);
-        if (!$utilisateur) {
+        if (! $utilisateur) {
             return response()->json(['message' => 'Utilisateur non trouvé'], 404);
         }
+
         return response()->json(['message' => 'Compte désactivé avec succès'], 200);
     }
 
     public function supprimerUtilisateurByAdmin(Request $request, $id)
     {
         $utilisateur = $this->utilisateurService->anonymiserUtilisateurByAdmin($id);
-        if (!$utilisateur) {
+        if (! $utilisateur) {
             return response()->json(['message' => 'Utilisateur non trouvé'], 404);
         }
+
         return response()->json(['message' => 'Compte anonymisé et supprimé (RGPD)'], 200);
     }
 
@@ -220,7 +225,7 @@ class UtilisateurController extends Controller
 
         return response()->json([
             'status' => 'success',
-            'data' => $roles
+            'data' => $roles,
         ]);
     }
 }

@@ -2,8 +2,8 @@
 
 namespace Tests\Feature\Informations;
 
-use Tests\TestCase;
 use Illuminate\Support\Facades\DB;
+use Tests\TestCase;
 
 class InformationTest extends TestCase
 {
@@ -26,7 +26,7 @@ class InformationTest extends TestCase
             'titre_information' => 'Conseil Sommeil',
             'contenu_information' => 'Pour mieux dormir, évitez les écrans.',
             'id_categorie' => 1,
-            'id_utilisateur' => 1 // 💻 LE FIX : On associe un auteur fictif
+            'id_utilisateur' => 1, // 💻 LE FIX : On associe un auteur fictif
         ]);
 
         // 2. On appelle ta route de liste
@@ -45,7 +45,7 @@ class InformationTest extends TestCase
             'titre_information' => 'Gestion du Stress',
             'contenu_information' => 'Respirez profondément pendant 5 minutes.',
             'id_categorie' => 1,
-            'id_utilisateur' => 1 // 💻 LE FIX : On associe un auteur fictif
+            'id_utilisateur' => 1, // 💻 LE FIX : On associe un auteur fictif
         ]);
 
         // 2. On appelle ta route de détail avec l'ID 42
@@ -61,7 +61,7 @@ class InformationTest extends TestCase
         $response = $this->postJson('/api/information', [
             'titre_information' => 'Article piraté',
             'contenu_information' => 'Tentative d\'injection',
-            'id_categorie' => 1
+            'id_categorie' => 1,
         ]);
 
         $response->assertStatus(401);

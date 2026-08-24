@@ -7,9 +7,13 @@ use Illuminate\Database\Eloquent\Model;
 class CategorieActivite extends Model
 {
     protected $table = 'categorie_activite';
+
     protected $primaryKey = 'id_categorie';
+
     public $incrementing = true;
+
     protected $keyType = 'int';
+
     public $timestamps = false;
 
     protected $fillable = [

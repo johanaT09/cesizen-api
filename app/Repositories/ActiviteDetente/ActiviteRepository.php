@@ -14,7 +14,7 @@ class ActiviteRepository
             ->where('est_actif', true);
 
         if ($search !== null && $search !== '') {
-            $query->where('titre_activite', 'ILIKE', '%' . $search . '%');
+            $query->where('titre_activite', 'ILIKE', '%'.$search.'%');
         }
 
         if ($catId) {
@@ -50,15 +50,17 @@ class ActiviteRepository
     public function createActivite(array $data)
     {
         $data['est_actif'] = true;
+
         return ActiviteDetente::create($data);
     }
 
     public function toggleFavori($userId, $activiteId)
     {
-        $utilisateur = \App\Models\Utilisateur::find($userId);
-        if (!$utilisateur) {
+        $utilisateur = Utilisateur::find($userId);
+        if (! $utilisateur) {
             return null;
         }
+
         return $utilisateur->activitesFavoris()->toggle($activiteId);
     }
 
@@ -73,7 +75,7 @@ class ActiviteRepository
     {
         $activite = ActiviteDetente::find($id);
 
-        if (!$activite) {
+        if (! $activite) {
             return null;
         }
 
@@ -87,7 +89,7 @@ class ActiviteRepository
     {
         $activite = ActiviteDetente::find($id);
 
-        if (!$activite) {
+        if (! $activite) {
             return null;
         }
 
@@ -102,7 +104,7 @@ class ActiviteRepository
         $query = ActiviteDetente::with(['categorie', 'type']);
 
         if ($search !== null && $search !== '') {
-            $query->where('titre_activite', 'ILIKE', '%' . $search . '%');
+            $query->where('titre_activite', 'ILIKE', '%'.$search.'%');
         }
 
         if ($catId) {
@@ -129,12 +131,12 @@ class ActiviteRepository
         return DB::table('session_activite')->updateOrInsert(
             [
                 'id_utilisateur' => $userId,
-                'id_activite' => $activiteId
+                'id_activite' => $activiteId,
             ],
             [
-                'duree_realisee' => $progression, 
-                'date_session'   => now(),
-                'est_termine'    => $estTermine      
+                'duree_realisee' => $progression,
+                'date_session' => now(),
+                'est_termine' => $estTermine,
             ]
         );
     }
@@ -145,7 +147,7 @@ class ActiviteRepository
             $query->select('id_activite')
                 ->from('session_activite')
                 ->where('id_utilisateur', $userId)
-                ->where('duree_realisee', '>', 0) 
+                ->where('duree_realisee', '>', 0)
                 ->where('est_termine', false);
         })->with(['categorie', 'type'])->get();
     }

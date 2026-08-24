@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers\Compte;
 
-use App\Services\Compte\GenreUtilisateurService;
 use App\Http\Controllers\Controller;
+use App\Services\Compte\GenreUtilisateurService;
 
 class GenreUtilisateurController extends Controller
 {
@@ -17,6 +17,7 @@ class GenreUtilisateurController extends Controller
     public function GetGenres()
     {
         $genres = $this->genreUtilisateurService->getAllGenres();
+
         return response()->json($genres);
     }
 }

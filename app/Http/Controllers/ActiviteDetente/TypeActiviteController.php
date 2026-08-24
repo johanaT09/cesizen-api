@@ -4,8 +4,8 @@ namespace App\Http\Controllers\ActiviteDetente;
 
 use App\Http\Controllers\Controller;
 use App\Services\ActiviteDetente\TypeActiviteService;
-use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 
 class TypeActiviteController extends Controller
 {
@@ -25,7 +25,7 @@ class TypeActiviteController extends Controller
     {
         $type = $this->typeActiviteService->getTypeById($id);
 
-        if (!$type) {
+        if (! $type) {
             return response()->json(['message' => 'Type non trouvé'], 404);
         }
 
@@ -42,7 +42,7 @@ class TypeActiviteController extends Controller
 
         return response()->json([
             'message' => 'Type d\'activité créé avec succès',
-            'data' => $type
+            'data' => $type,
         ], 201);
     }
 }

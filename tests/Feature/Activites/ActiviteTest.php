@@ -2,8 +2,8 @@
 
 namespace Tests\Feature\Activites;
 
-use Tests\TestCase;
 use Illuminate\Support\Facades\DB;
+use Tests\TestCase;
 
 class ActiviteTest extends TestCase
 {
@@ -26,7 +26,7 @@ class ActiviteTest extends TestCase
             'titre_activite' => 'Méditation Guidée',
             'contenu_activite' => '10 minutes pour relâcher la pression.',
             'id_type' => 1,
-            'id_categorie' => 1
+            'id_categorie' => 1,
         ]);
 
         // 2. On appelle ta route GET pour lister les activités
@@ -45,7 +45,7 @@ class ActiviteTest extends TestCase
             'titre_activite' => 'Séance Yoga ASMR',
             'contenu_activite' => 'Idéal pour décompresser avant de dormir.',
             'id_type' => 1,
-            'id_categorie' => 1
+            'id_categorie' => 1,
         ]);
 
         // 2. On appelle ta route de détail pour l'ID 99
@@ -62,7 +62,7 @@ class ActiviteTest extends TestCase
             'titre_activite' => 'Activité piratée',
             'contenu_activite' => 'Tentative d\'intrusion',
             'id_type' => 1,
-            'id_categorie' => 1
+            'id_categorie' => 1,
         ]);
 
         $response->assertStatus(401);

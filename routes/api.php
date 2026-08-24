@@ -1,22 +1,22 @@
 <?php
 
-use App\Http\Controllers\Informations\CategorieActiviteController;
-use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ActiviteDetente\ActiviteController;
+use App\Http\Controllers\ActiviteDetente\TypeActiviteController;
+use App\Http\Controllers\Compte\AuthController;
 use App\Http\Controllers\Compte\GenreUtilisateurController;
 use App\Http\Controllers\Compte\UtilisateurController;
-use App\Http\Controllers\Compte\AuthController;
+use App\Http\Controllers\Informations\CategorieActiviteController;
 use App\Http\Controllers\Informations\InformationController;
-use App\Http\Controllers\ActiviteDetente\TypeActiviteController;
-use App\Http\Controllers\ActiviteDetente\ActiviteController;
+use Illuminate\Support\Facades\Route;
 
 // Route accessible sans authentification
 
-// Gestion du compte utilisateur : 
+// Gestion du compte utilisateur :
 Route::post('/signup', [UtilisateurController::class, 'signUp']); // Création d'un compte utilisateur
 Route::get('/genres', [GenreUtilisateurController::class, 'GetGenres']); // Liste les genres utilisateurs
 Route::post('/login', [AuthController::class, 'login']); // Connexion utilisateur
 
-// Informations : 
+// Informations :
 Route::get('/informations', [InformationController::class, 'getInformations']); // Liste toutes les informations
 Route::get('/information/{id}', [InformationController::class, 'getInformationById']); // Récupérer une information précise par son ID
 
@@ -32,7 +32,6 @@ Route::get('/activites/type/{typeId}', [ActiviteController::class, 'getActivites
 Route::get('/activites/categorie/{categorieId}', [ActiviteController::class, 'getActivitesByCategorie']); // Liste les activités filtrées par l'ID de la catégorie
 
 Route::get('/activites/{id}/video', [ActiviteController::class, 'getVideoStream']);
-
 
 Route::post('/forgot-password', [AuthController::class, 'forgotPassword'])->middleware('throttle:3,10'); // Demande de reinitialisation de mot de passe
 Route::post('/reset-password', [AuthController::class, 'resetPassword']); // Reinitialisation de mot de passe
@@ -63,9 +62,9 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('/utilisateurs', [UtilisateurController::class, 'getUtilisateursComptes']); // Récupérer la liste de tous les utilisateurs
         Route::put('/utilisateur/{id}', [UtilisateurController::class, 'updateUtilisateurByAdmin']); // Modifier les informations d'un utilisateur (admin)
         Route::post('/utilisateur/admin-create', [UtilisateurController::class, 'createUtilisateurByAdmin']); // Créer un utilisateur (admin)
-        Route::patch('/utilisateur/{id}/desactiver', [UtilisateurController::class, 'desactiverUtilisateurByAdmin']); // Désactiver un compte utilisateur   
+        Route::patch('/utilisateur/{id}/desactiver', [UtilisateurController::class, 'desactiverUtilisateurByAdmin']); // Désactiver un compte utilisateur
         Route::delete('/utilisateur/{id}', [UtilisateurController::class, 'supprimerutilisateurByAdmin']); // Supprimer un compte (Anonymisation + est_actif = false)
-        Route::get('/roles', [UtilisateurController::class, 'getRoles']); //Afficher la liste des rôles disponibles
+        Route::get('/roles', [UtilisateurController::class, 'getRoles']); // Afficher la liste des rôles disponibles
 
         Route::get('/admin/informations', [InformationController::class, 'getAdminInformations']); // Récupérer toutes les informations (y compris celles désactivées) pour l'admin
         Route::post('/information', [InformationController::class, 'createInformation']); // Créer une nouvelle information
