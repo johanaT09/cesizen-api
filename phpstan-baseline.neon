@@ -1,0 +1,61 @@
+parameters:
+	ignoreErrors:
+		-
+			message: '#^Access to an undefined property App\\Models\\User\:\:\$id_utilisateur\.$#'
+			identifier: property.notFound
+			count: 5
+			path: app/Http/Controllers/ActiviteDetente/ActiviteController.php
+
+		-
+			message: '#^Access to an undefined property App\\Models\\User\:\:\$id_utilisateur\.$#'
+			identifier: property.notFound
+			count: 3
+			path: app/Http/Controllers/Compte/UtilisateurController.php
+
+		-
+			message: '#^Access to an undefined property App\\Models\\User\:\:\$id_utilisateur\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Controllers/Informations/InformationController.php
+
+		-
+			message: '#^Access to an undefined property App\\Models\\User\:\:\$id_role\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Middleware/IsAdmin.php
+
+		-
+			message: '#^Relation ''categorie'' is not found in App\\Models\\ActiviteDetente model\.$#'
+			identifier: larastan.relationExistence
+			count: 6
+			path: app/Repositories/ActiviteDetente/ActiviteRepository.php
+
+		-
+			message: '#^Relation ''type'' is not found in App\\Models\\ActiviteDetente model\.$#'
+			identifier: larastan.relationExistence
+			count: 6
+			path: app/Repositories/ActiviteDetente/ActiviteRepository.php
+
+		-
+			message: '#^Relation ''genre'' is not found in App\\Models\\Utilisateur model\.$#'
+			identifier: larastan.relationExistence
+			count: 2
+			path: app/Repositories/Compte/UtilisateurRepository.php
+
+		-
+			message: '#^Relation ''role'' is not found in App\\Models\\Utilisateur model\.$#'
+			identifier: larastan.relationExistence
+			count: 2
+			path: app/Repositories/Compte/UtilisateurRepository.php
+
+		-
+			message: '#^Relation ''categorie'' is not found in App\\Models\\Information model\.$#'
+			identifier: larastan.relationExistence
+			count: 5
+			path: app/Repositories/Informations/InformationRepository.php
+
+		-
+			message: '#^Relation ''utilisateur'' is not found in App\\Models\\Information model\.$#'
+			identifier: larastan.relationExistence
+			count: 4
+			path: app/Repositories/Informations/InformationRepository.php
