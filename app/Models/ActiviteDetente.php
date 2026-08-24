@@ -7,9 +7,13 @@ use Illuminate\Database\Eloquent\Model;
 class ActiviteDetente extends Model
 {
     protected $table = 'activite_detente';
+
     protected $primaryKey = 'id_activite';
+
     public $incrementing = true;
+
     protected $keyType = 'int';
+
     public $timestamps = false;
 
     protected $fillable = [

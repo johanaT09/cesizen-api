@@ -2,11 +2,11 @@
 
 namespace Tests\Feature\Compte;
 
-use Tests\TestCase;
-use Illuminate\Support\Facades\Mail;
+use App\Mail\ResetPasswordMail;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
-use App\Mail\ResetPasswordMail;
+use Illuminate\Support\Facades\Mail;
+use Tests\TestCase;
 
 class AuthTest extends TestCase
 {
@@ -30,11 +30,11 @@ class AuthTest extends TestCase
             'email' => 'test-unitaire@cesizen.fr',
             'mot_de_passe' => Hash::make('Password123!'),
             'id_role' => 1,
-            'id_genre' => 1
+            'id_genre' => 1,
         ]);
 
         $response = $this->postJson('/api/forgot-password', [
-            'email' => 'test-unitaire@cesizen.fr'
+            'email' => 'test-unitaire@cesizen.fr',
         ]);
 
         $response->assertStatus(200);
@@ -49,7 +49,7 @@ class AuthTest extends TestCase
     public function test_la_demande_echoue_si_l_email_n_existe_pas()
     {
         $response = $this->postJson('/api/forgot-password', [
-            'email' => 'inconnu@cesi.fr'
+            'email' => 'inconnu@cesi.fr',
         ]);
 
         $response->assertStatus(422);
@@ -64,7 +64,7 @@ class AuthTest extends TestCase
             'email' => 'nouveau-compte@cesizen.fr',
             'mot_de_passe' => 'Password123!',
             'id_genre' => 1,
-            'date_naissance' => '2000-01-01'
+            'date_naissance' => '2000-01-01',
         ]);
 
         $response->assertStatus($response->status());
@@ -79,14 +79,14 @@ class AuthTest extends TestCase
             'email' => 'change-mdp@cesizen.fr',
             'mot_de_passe' => Hash::make('AncienMdp123!'),
             'id_role' => 1,
-            'id_genre' => 1
+            'id_genre' => 1,
         ]);
 
         // 2. On simule un token valide stocké en base de données
         DB::table('password_reset_tokens')->insert([
             'email' => 'change-mdp@cesizen.fr',
             'token' => Hash::make('mon-super-token-secret'),
-            'created_at' => now()
+            'created_at' => now(),
         ]);
 
         // 3. On appelle ta route de réinitialisation finale
@@ -94,7 +94,7 @@ class AuthTest extends TestCase
             'token' => 'mon-super-token-secret',
             'email' => 'change-mdp@cesizen.fr',
             'password' => 'NouveauMdp123!',
-            'password_confirmation' => 'NouveauMdp123!'
+            'password_confirmation' => 'NouveauMdp123!',
         ]);
 
         // 4. On vérifie que ton contrôleur répond positivement

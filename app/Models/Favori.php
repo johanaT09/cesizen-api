@@ -7,8 +7,11 @@ use Illuminate\Database\Eloquent\Model;
 class Favori extends Model
 {
     protected $table = 'favori';
+
     public $incrementing = false;
+
     public $timestamps = false;
+
     protected $primaryKey = null;
 
     protected $fillable = [

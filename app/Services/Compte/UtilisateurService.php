@@ -2,10 +2,10 @@
 
 namespace App\Services\Compte;
 
-use App\Repositories\Compte\UtilisateurRepository;
 use App\Models\Role;
-use Illuminate\Support\Str;
+use App\Repositories\Compte\UtilisateurRepository;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 
 class UtilisateurService
 {
@@ -24,6 +24,7 @@ class UtilisateurService
         $role = Role::where('libelle', 'Utilisateur')->first();
         $data['id_role'] = $role ? $role->id_role : null;
         $data['mot_de_passe'] = bcrypt($data['mot_de_passe']);
+
         return $this->utilisateurRepository->createUtilisateur($data);
     }
 
@@ -35,12 +36,12 @@ class UtilisateurService
     public function updateUtilisateur($id, $data)
     {
         $user = $this->utilisateurRepository->findById($id);
-        if (!$user) {
+        if (! $user) {
             return null;
         }
 
-        if (!empty($data['current_password'])) {
-            if (!Hash::check($data['current_password'], $user->mot_de_passe)) {
+        if (! empty($data['current_password'])) {
+            if (! Hash::check($data['current_password'], $user->mot_de_passe)) {
                 throw new \InvalidArgumentException('Votre mot de passe actuel est incorrect.');
             }
 
@@ -56,7 +57,7 @@ class UtilisateurService
     {
         $data = [
             'prenom' => 'Anonyme',
-            'email' => 'supprime_' . $userId . '_' . time() . '@domaine.com',
+            'email' => 'supprime_'.$userId.'_'.time().'@domaine.com',
             'mot_de_passe' => Hash::make(Str::random(60)),
             'est_actif' => false,
             'date_anonymisation' => now(),
@@ -83,17 +84,17 @@ class UtilisateurService
     public function desactiverUtilisateurByAdmin($id)
     {
         return $this->utilisateurRepository->updateUtilisateurByAdmin($id, [
-            'est_actif' => false
+            'est_actif' => false,
         ]);
     }
 
     public function anonymiserUtilisateurByAdmin($id)
     {
         return $this->utilisateurRepository->updateUtilisateurByAdmin($id, [
-            'prenom'             => 'Anonyme',
-            'email'              => 'anonyme_' . $id . '_' . uniqid() . '@cesizen.fr',
-            'mot_de_passe'       => bcrypt(str::random(16)), 
-            'est_actif'          => false,
+            'prenom' => 'Anonyme',
+            'email' => 'anonyme_'.$id.'_'.uniqid().'@cesizen.fr',
+            'mot_de_passe' => bcrypt(Str::random(16)),
+            'est_actif' => false,
             'date_anonymisation' => now(),
         ]);
     }

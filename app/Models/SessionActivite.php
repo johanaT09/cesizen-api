@@ -7,9 +7,13 @@ use Illuminate\Database\Eloquent\Model;
 class SessionActivite extends Model
 {
     protected $table = 'session_activite';
+
     protected $primaryKey = 'id_session';
+
     public $incrementing = true;
+
     protected $keyType = 'int';
+
     public $timestamps = false;
 
     protected $fillable = [

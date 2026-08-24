@@ -15,14 +15,14 @@ class InformationRepository
             $query->where('id_categorie', $categoryId);
         }
 
-        if (!empty($search)) {
+        if (! empty($search)) {
             $query->where(function ($q) use ($search) {
-                $q->where('titre_information', 'ILIKE', '%' . $search . '%')
+                $q->where('titre_information', 'ILIKE', '%'.$search.'%')
                     ->orWhereHas('categorie', function ($q) use ($search) {
-                        $q->where('libelle_categorie', 'ILIKE', '%' . $search . '%');
+                        $q->where('libelle_categorie', 'ILIKE', '%'.$search.'%');
                     })
                     ->orWhereHas('utilisateur', function ($q) use ($search) {
-                        $q->where('prenom', 'ILIKE', '%' . $search . '%');
+                        $q->where('prenom', 'ILIKE', '%'.$search.'%');
                     });
             });
         }
@@ -43,14 +43,14 @@ class InformationRepository
             $query->where('id_categorie', $categoryId);
         }
 
-        if (!empty($search)) {
+        if (! empty($search)) {
             $query->where(function ($q) use ($search) {
-                $q->where('titre_information', 'ILIKE', '%' . $search . '%')
+                $q->where('titre_information', 'ILIKE', '%'.$search.'%')
                     ->orWhereHas('categorie', function ($q) use ($search) {
-                        $q->where('libelle_categorie', 'ILIKE', '%' . $search . '%');
+                        $q->where('libelle_categorie', 'ILIKE', '%'.$search.'%');
                     })
                     ->orWhereHas('utilisateur', function ($q) use ($search) {
-                        $q->where('prenom', 'ILIKE', '%' . $search . '%');
+                        $q->where('prenom', 'ILIKE', '%'.$search.'%');
                     });
             });
         }
@@ -67,14 +67,16 @@ class InformationRepository
     {
         $information = Information::findOrFail($id);
         $information->update($data);
+
         return $information;
     }
 
     public function toggleStatus($id)
     {
         $information = Information::findOrFail($id);
-        $information->est_actif = !$information->est_actif;
+        $information->est_actif = ! $information->est_actif;
         $information->save();
+
         return $information;
     }
 }

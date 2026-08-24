@@ -7,9 +7,13 @@ use Illuminate\Database\Eloquent\Model;
 class TypeActivite extends Model
 {
     protected $table = 'type';
+
     protected $primaryKey = 'id_type';
+
     public $incrementing = true;
+
     protected $keyType = 'int';
+
     public $timestamps = false;
 
     protected $fillable = [

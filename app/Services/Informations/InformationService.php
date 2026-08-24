@@ -17,6 +17,7 @@ class InformationService
     {
         return $this->informationRepository->getAllInformations($search, $categoryId);
     }
+
     public function getInformationById($id)
     {
         return $this->informationRepository->getInformationById($id);

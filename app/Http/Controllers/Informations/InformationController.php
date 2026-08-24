@@ -25,7 +25,7 @@ class InformationController extends Controller
 
         return response()->json([
             'status' => 'success',
-            'data' => $informations
+            'data' => $informations,
         ]);
     }
 
@@ -33,16 +33,16 @@ class InformationController extends Controller
     {
         $information = $this->informationService->getInformationById($id);
 
-        if (!$information) {
+        if (! $information) {
             return response()->json([
                 'status' => 'error',
-                'message' => 'Information non trouvée'
+                'message' => 'Information non trouvée',
             ], 404);
         }
 
         return response()->json([
             'status' => 'success',
-            'data' => $information
+            'data' => $information,
         ]);
     }
 
@@ -56,7 +56,7 @@ class InformationController extends Controller
 
         return response()->json([
             'status' => 'success',
-            'data' => $informations
+            'data' => $informations,
         ]);
     }
 
@@ -83,7 +83,7 @@ class InformationController extends Controller
             'titre_information' => 'required|string|max:255',
             'contenu_information' => 'required|string',
             'id_categorie' => 'required|integer|exists:categorie_activite,id_categorie',
-            'est_actif' => 'required|boolean'
+            'est_actif' => 'required|boolean',
         ]);
 
         $information = $this->informationService->updateInformation($id, $validated);
@@ -94,6 +94,7 @@ class InformationController extends Controller
     public function toggleStatus($id): JsonResponse
     {
         $information = $this->informationService->toggleStatus($id);
+
         return response()->json(['status' => 'success', 'data' => $information]);
     }
 }

@@ -2,16 +2,21 @@
 
 namespace App\Models;
 
+use Illuminate\Foundation\Auth\User;
 use Laravel\Sanctum\HasApiTokens;
 
-class Utilisateur extends \Illuminate\Foundation\Auth\User
+class Utilisateur extends User
 {
     use HasApiTokens;
 
     protected $table = 'utilisateur';
+
     protected $primaryKey = 'id_utilisateur';
+
     public $incrementing = true;
+
     protected $keyType = 'int';
+
     public $timestamps = false;
 
     protected $fillable = [

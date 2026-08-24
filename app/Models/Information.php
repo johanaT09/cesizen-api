@@ -7,9 +7,13 @@ use Illuminate\Database\Eloquent\Model;
 class Information extends Model
 {
     protected $table = 'information';
+
     protected $primaryKey = 'id_information';
+
     public $incrementing = true;
+
     protected $keyType = 'int';
+
     public $timestamps = false;
 
     protected $fillable = [
