@@ -15,6 +15,13 @@ jobs:
     if: github.event_name == 'pull_request'
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Scan des secrets (Gitleaks)
+        uses: gitleaks/gitleaks-action@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Installer PHP
         uses: shivammathur/setup-php@v2
@@ -31,6 +38,14 @@ jobs:
       - name: Analyse statique (Larastan)
         run: ./vendor/bin/phpstan analyse --no-progress
 
+      - name: Auditer les dépendances PHP
+        run: composer audit
+
+      - name: Vérifier le Dockerfile (Hadolint)
+        uses: hadolint/hadolint-action@v3.1.0
+        with:
+          dockerfile: Dockerfile
+
       - name: Copier le fichier d'environnement de test
         run: cp .env.example .env
 
@@ -40,8 +55,16 @@ jobs:
       - name: Lancer les tests
         run: php artisan test
 
-      - name: Construire l'image Docker (vérification)
+      - name: Construire l'image Docker
         run: docker build -t cesizen-api .
+
+      - name: Scanner l'image (Trivy)
+        uses: aquasecurity/trivy-action@master
+        with:
+          image-ref: cesizen-api
+          format: table
+          severity: CRITICAL,HIGH
+          exit-code: '0'
 
   build-and-push:
     runs-on: ubuntu-latest
