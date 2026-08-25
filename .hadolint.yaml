@@ -1,0 +1,7 @@
+# Configuration Hadolint — CesiZen
+# DL3008 ignorée volontairement : figer la version exacte de chaque paquet
+# système (libpq-dev, libzip-dev...) rendrait le build fragile à chaque mise
+# à jour de l'image de base php:8.2-fpm, pour un bénéfice de sécurité limité
+# sur des paquets système déjà maintenus par Debian/l'image officielle.
+ignored:
+  - DL3008

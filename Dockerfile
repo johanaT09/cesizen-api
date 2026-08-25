@@ -9,7 +9,7 @@ FROM php:8.2-fpm
 # - libxml2-dev      : requis pour les extensions xml/dom
 # - libcurl4-openssl-dev : requis pour l'extension curl (appels HTTP sortants)
 # - unzip, git       : nécessaires à Composer pour installer les paquets PHP
-RUN apt-get update && apt-get install -y \
+RUN apt-get update && apt-get install -y --no-install-recommends \
     libpq-dev \
     libzip-dev \
     libpng-dev \
