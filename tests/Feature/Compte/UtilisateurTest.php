@@ -3,6 +3,7 @@
 namespace Tests\Feature\Compte;
 
 use App\Models\GenreUtilisateur;
+use App\Models\Role;
 use App\Models\Utilisateur;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
@@ -162,7 +163,7 @@ class UtilisateurTest extends TestCase
     {
         $admin = Utilisateur::factory()->admin()->create();
         $genre = GenreUtilisateur::factory()->create();
-        $role = \App\Models\Role::factory()->create();
+        $role = Role::factory()->create();
 
         $response = $this->withHeaders($this->authHeader($admin))
             ->postJson('/api/utilisateur/admin-create', [
@@ -198,7 +199,7 @@ class UtilisateurTest extends TestCase
     public function test_un_administrateur_peut_consulter_les_roles()
     {
         $admin = Utilisateur::factory()->admin()->create();
-        \App\Models\Role::factory()->count(2)->create();
+        Role::factory()->count(2)->create();
 
         $response = $this->withHeaders($this->authHeader($admin))
             ->getJson('/api/roles');

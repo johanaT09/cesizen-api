@@ -4,6 +4,7 @@ namespace Tests\Unit\Models;
 
 use App\Models\ActiviteDetente;
 use App\Models\CategorieActivite;
+use App\Models\GenreUtilisateur;
 use App\Models\Information;
 use App\Models\Role;
 use App\Models\TypeActivite;
@@ -31,10 +32,10 @@ class RelationsTest extends TestCase
 
     public function test_un_utilisateur_appartient_a_un_genre()
     {
-        $genre = \App\Models\GenreUtilisateur::factory()->create(['libelle_genre' => 'Homme']);
+        $genre = GenreUtilisateur::factory()->create(['libelle_genre' => 'Homme']);
         $utilisateur = Utilisateur::factory()->create(['id_genre' => $genre->id_genre]);
 
-        $this->assertInstanceOf(\App\Models\GenreUtilisateur::class, $utilisateur->genre);
+        $this->assertInstanceOf(GenreUtilisateur::class, $utilisateur->genre);
         $this->assertSame('Homme', $utilisateur->genre->libelle_genre);
     }
 
