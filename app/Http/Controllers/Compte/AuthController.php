@@ -54,6 +54,15 @@ class AuthController extends Controller
         }
     }
 
+    public function logout(Request $request)
+    {
+        $this->authService->logout($request->user());
+
+        return response()->json([
+            'message' => 'Déconnexion réussie',
+        ], 200);
+    }
+
     public function forgotPassword(Request $request)
     {
         $request->validate([

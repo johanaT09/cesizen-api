@@ -2,10 +2,13 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class SessionActivite extends Model
 {
+    use HasFactory;
+
     protected $table = 'session_activite';
 
     protected $primaryKey = 'id_session';
@@ -21,7 +24,7 @@ class SessionActivite extends Model
         'duree_realisee',
         'id_activite',
         'id_utilisateur',
-        'est_terminee',
+        'est_termine',
     ];
 
     /**

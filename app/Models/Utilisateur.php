@@ -2,12 +2,13 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User;
 use Laravel\Sanctum\HasApiTokens;
 
 class Utilisateur extends User
 {
-    use HasApiTokens;
+    use HasApiTokens, HasFactory;
 
     protected $table = 'utilisateur';
 
